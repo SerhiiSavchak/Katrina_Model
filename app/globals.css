@@ -1,30 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Model Portfolio Palette */
-  --background: 45 30% 98%;        /* Warm ivory/milk */
-  --foreground: 0 0% 15%;          /* Deep charcoal */
+  /* Premium Editorial Palette */
+  --background: 45 20% 97%;        /* Warm ivory/milk */
+  --foreground: 0 0% 8%;           /* Near black charcoal */
   
-  --card: 40 20% 96%;              /* Soft beige */
-  --card-foreground: 0 0% 15%;
+  --card: 40 15% 95%;              /* Soft warm gray */
+  --card-foreground: 0 0% 8%;
   
-  --primary: 30 15% 25%;           /* Muted brown */
-  --primary-foreground: 45 30% 98%;
+  --primary: 0 0% 8%;              /* Near black */
+  --primary-foreground: 45 20% 97%;
   
-  --secondary: 35 10% 90%;         /* Champagne */
-  --secondary-foreground: 0 0% 20%;
+  --secondary: 35 8% 92%;          /* Light champagne */
+  --secondary-foreground: 0 0% 15%;
   
-  --muted: 35 10% 85%;             /* Soft taupe */
+  --muted: 35 8% 88%;              /* Soft taupe */
   --muted-foreground: 0 0% 45%;
   
-  --accent: 30 15% 30%;            /* Taupe accent */
-  --accent-foreground: 45 30% 98%;
+  --accent: 38 25% 75%;            /* Gold champagne */
+  --accent-foreground: 0 0% 8%;
   
-  --border: 35 10% 88%;
-  --input: 35 10% 88%;
-  --ring: 30 15% 25%;
+  --dark: 0 0% 6%;                 /* Editorial dark blocks */
+  --dark-foreground: 38 25% 75%;   /* Gold on dark */
   
-  --radius: 0.25rem;
+  --border: 35 8% 90%;
+  --input: 35 8% 90%;
+  --ring: 0 0% 8%;
+  
+  --radius: 0rem;
 }
 
 @theme inline {
@@ -40,13 +43,15 @@
   --color-muted-foreground: hsl(var(--muted-foreground));
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-dark: hsl(var(--dark));
+  --color-dark-foreground: hsl(var(--dark-foreground));
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --radius: var(--radius);
   
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  --font-serif: var(--font-cormorant);
 }
 
 * {
@@ -63,15 +68,45 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Reveal animation */
+/* Editorial Typography Classes */
+.editorial-display {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+.editorial-heading {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.editorial-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Reveal animations */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes reveal-clip {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -84,12 +119,31 @@ body {
   }
 }
 
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(60px) rotateX(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
 .animate-reveal-up {
-  animation: reveal-up 0.8s ease-out forwards;
+  animation: reveal-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-reveal-clip {
+  animation: reveal-clip 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-stagger {
+  animation: stagger-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animation-delay-100 { animation-delay: 100ms; }
@@ -97,8 +151,39 @@ body {
 .animation-delay-300 { animation-delay: 300ms; }
 .animation-delay-400 { animation-delay: 400ms; }
 .animation-delay-500 { animation-delay: 500ms; }
+.animation-delay-600 { animation-delay: 600ms; }
+.animation-delay-700 { animation-delay: 700ms; }
+.animation-delay-800 { animation-delay: 800ms; }
 
 /* Selection */
 ::selection {
-  background: hsl(30 15% 25% / 0.2);
+  background: hsl(0 0% 8% / 0.15);
+}
+
+/* Thin editorial lines */
+.editorial-line {
+  height: 1px;
+  background: hsl(var(--foreground) / 0.15);
+}
+
+.editorial-line-vertical {
+  width: 1px;
+  background: hsl(var(--foreground) / 0.15);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground) / 0.3);
 }

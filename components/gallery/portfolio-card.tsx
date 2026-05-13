@@ -6,39 +6,50 @@ import Image from "next/image"
 
 interface PortfolioCardProps {
   item: PortfolioItem
+  index: number
 }
 
-export function PortfolioCard({ item }: PortfolioCardProps) {
-  const aspectClass = {
-    portrait: "aspect-[3/4]",
-    landscape: "aspect-[4/3]",
-    square: "aspect-square",
-  }[item.aspectRatio]
+export function PortfolioCard({ item, index }: PortfolioCardProps) {
+  // Varied aspect ratios for editorial feel
+  const aspectPatterns = [
+    "aspect-[4/5]",
+    "aspect-[3/4]",
+    "aspect-[5/6]",
+    "aspect-[4/5]",
+    "aspect-[3/4]",
+    "aspect-[5/7]",
+  ]
+  const aspectClass = aspectPatterns[index % aspectPatterns.length]
 
   return (
-    <article className="group relative overflow-hidden bg-card">
+    <article className="group relative overflow-hidden bg-background">
       <div className={cn("relative w-full", aspectClass)}>
         <Image
           src={item.image}
           alt={item.title}
           fill
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
         />
         
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-500" />
-        
-        {/* Content overlay */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-            <span className="text-xs uppercase tracking-[0.2em] text-white/80 mb-2 block">
+        {/* Subtle hover overlay */}
+        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-700" />
+      </div>
+      
+      {/* Caption - Always visible, editorial style */}
+      <div className="pt-4 pb-6">
+        <div className="flex items-baseline justify-between gap-4">
+          <div>
+            <span className="text-[9px] uppercase tracking-[0.2em] text-foreground/40 block mb-1">
               {item.category}
             </span>
-            <h3 className="font-serif text-xl text-white">
+            <h3 className="editorial-heading text-lg md:text-xl text-foreground">
               {item.title}
             </h3>
           </div>
+          <span className="text-[10px] text-foreground/30 font-mono">
+            {String(index + 1).padStart(2, "0")}
+          </span>
         </div>
       </div>
     </article>
