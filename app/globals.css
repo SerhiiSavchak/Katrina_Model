@@ -51,7 +51,7 @@
   --radius: var(--radius);
   
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-cormorant);
+  --font-serif: var(--font-bodoni);
 }
 
 * {
@@ -71,29 +71,29 @@ body {
 /* Editorial Typography Classes */
 .editorial-display {
   font-family: var(--font-serif);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.85;
 }
 
 .editorial-heading {
   font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
 .editorial-italic {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* Reveal animations */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(50px);
   }
   to {
     opacity: 1;
@@ -104,6 +104,15 @@ body {
 @keyframes reveal-clip {
   from {
     clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes reveal-clip-left {
+  from {
+    clip-path: inset(0 100% 0 0);
   }
   to {
     clip-path: inset(0 0 0 0);
@@ -122,11 +131,29 @@ body {
 @keyframes stagger-in {
   from {
     opacity: 0;
-    transform: translateY(60px) rotateX(-10deg);
+    transform: translateY(100%);
   }
   to {
     opacity: 1;
-    transform: translateY(0) rotateX(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
@@ -135,7 +162,11 @@ body {
 }
 
 .animate-reveal-clip {
-  animation: reveal-clip 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: reveal-clip 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-reveal-clip-left {
+  animation: reveal-clip-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-fade-in {
@@ -146,6 +177,15 @@ body {
   animation: stagger-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.animate-line-grow {
+  animation: line-grow 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: left;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
 .animation-delay-100 { animation-delay: 100ms; }
 .animation-delay-200 { animation-delay: 200ms; }
 .animation-delay-300 { animation-delay: 300ms; }
@@ -154,6 +194,10 @@ body {
 .animation-delay-600 { animation-delay: 600ms; }
 .animation-delay-700 { animation-delay: 700ms; }
 .animation-delay-800 { animation-delay: 800ms; }
+.animation-delay-900 { animation-delay: 900ms; }
+.animation-delay-1000 { animation-delay: 1000ms; }
+.animation-delay-1200 { animation-delay: 1200ms; }
+.animation-delay-1400 { animation-delay: 1400ms; }
 
 /* Selection */
 ::selection {
