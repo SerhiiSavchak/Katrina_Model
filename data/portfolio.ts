@@ -6,6 +6,7 @@ export interface PortfolioItem {
   category: Exclude<PortfolioCategory, "All">
   image: string
   aspectRatio: "portrait" | "landscape" | "square"
+  year?: string
 }
 
 export const portfolioItems: PortfolioItem[] = [
@@ -15,6 +16,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Studio",
     image: "/images/portfolio/portfolio-01.jpg",
     aspectRatio: "portrait",
+    year: "2024",
   },
   {
     id: "2",
@@ -22,6 +24,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Editorial",
     image: "/images/portfolio/portfolio-02.jpg",
     aspectRatio: "landscape",
+    year: "2024",
   },
   {
     id: "3",
@@ -29,13 +32,15 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Beauty",
     image: "/images/portfolio/portfolio-03.jpg",
     aspectRatio: "portrait",
+    year: "2024",
   },
   {
     id: "4",
-    title: "Art Nude Study",
+    title: "Body Study I",
     category: "Art Nude",
     image: "/images/portfolio/portfolio-04.jpg",
     aspectRatio: "portrait",
+    year: "2024",
   },
   {
     id: "5",
@@ -43,6 +48,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Fashion",
     image: "/images/portfolio/portfolio-05.jpg",
     aspectRatio: "square",
+    year: "2024",
   },
   {
     id: "6",
@@ -50,6 +56,31 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Studio",
     image: "/images/portfolio/portfolio-06.jpg",
     aspectRatio: "portrait",
+    year: "2024",
+  },
+  {
+    id: "7",
+    title: "Studio Form",
+    category: "Art Nude",
+    image: "/images/portfolio/portfolio-01.jpg",
+    aspectRatio: "portrait",
+    year: "2023",
+  },
+  {
+    id: "8",
+    title: "Kyiv Fashion Week",
+    category: "Fashion",
+    image: "/images/portfolio/portfolio-02.jpg",
+    aspectRatio: "landscape",
+    year: "2023",
+  },
+  {
+    id: "9",
+    title: "Editorial Figure",
+    category: "Art Nude",
+    image: "/images/portfolio/portfolio-03.jpg",
+    aspectRatio: "portrait",
+    year: "2023",
   },
 ]
 
