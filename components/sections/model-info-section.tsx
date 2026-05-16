@@ -2,6 +2,7 @@
 
 import type { TranslationTree } from "@/data/translations"
 import { Reveal } from "@/components/ui/reveal"
+import { SiteContainer } from "@/components/layout/site-container"
 import { modelStats, type ModelStatId } from "@/data/model-info"
 import { useLocale } from "@/components/providers/app-providers"
 
@@ -24,9 +25,9 @@ export function ModelInfoSection() {
   const { t } = useLocale()
 
   return (
-    <section className="section-ambient-in bg-background py-24 md:py-32 lg:py-40">
-      <div className="mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
-        <div className="mb-16 md:mb-20">
+    <section className="section-ambient-in bg-background py-16 md:py-24 lg:py-28">
+      <SiteContainer>
+        <div className="mb-12 md:mb-14">
           <Reveal variant="text">
             <p className="label-sm mb-6 text-foreground/35">{t.modelInfo.label}</p>
           </Reveal>
@@ -53,15 +54,13 @@ export function ModelInfoSection() {
                     {displayValue(stat.id, stat.value, t)}
                   </span>
 
-                  <span className="label-xs text-foreground/40">
-                    {t.modelInfo.stats[stat.id]}
-                  </span>
+                  <span className="label-xs text-foreground/40">{t.modelInfo.stats[stat.id]}</span>
                 </div>
               ))}
             </div>
           </div>
         </Reveal>
-      </div>
+      </SiteContainer>
     </section>
   )
 }

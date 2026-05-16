@@ -26,6 +26,8 @@ type MobileSliderProps = {
   /** Autoplay advance (mobile-only usage in this site). Respects prefers-reduced-motion. */
   autoplay?: boolean
   autoplayIntervalMs?: number
+  /** Tighter footer (dots + hint) for sections where vertical rhythm should stay compact. */
+  compactFooter?: boolean
 }
 
 export function MobileSlider({
@@ -38,6 +40,7 @@ export function MobileSlider({
   swipeHint,
   autoplay = true,
   autoplayIntervalMs = AUTOPLAY_MS,
+  compactFooter = false,
 }: MobileSliderProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
@@ -147,17 +150,17 @@ export function MobileSlider({
   if (count === 0) return null
 
   return (
-    <div className={cn("-mx-6 w-auto max-w-none", className)}>
+    <div className={cn("w-full min-w-0", className)}>
       <div
         ref={trackRef}
         role="region"
         aria-roledescription="carousel"
         aria-label={ariaLabel}
         className={cn(
-          "flex scroll-smooth snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-6 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden",
+          "flex scroll-smooth snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [touch-action:pan-x_pan-y] md:gap-5 [&::-webkit-scrollbar]:hidden",
           trackClassName
         )}
-        style={{ scrollPaddingInline: "1.5rem" }}
+        style={{ scrollPaddingInline: 0 }}
       >
         {items.map((child, i) => (
           <div
@@ -171,7 +174,12 @@ export function MobileSlider({
       </div>
 
       {count > 1 ? (
-        <div className="mt-5 flex flex-col items-center gap-3 px-6">
+        <div
+          className={cn(
+            "flex flex-col items-center",
+            compactFooter ? "mt-3 gap-2" : "mt-5 gap-3"
+          )}
+        >
           {showDots ? (
             <div className="flex justify-center gap-1.5" aria-hidden>
               {items.map((_, i) => (

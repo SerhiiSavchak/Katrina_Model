@@ -2,7 +2,9 @@
 
 import { Reveal } from "@/components/ui/reveal"
 import { ScrollParallax } from "@/components/ui/scroll-parallax"
+import { SiteContainer } from "@/components/layout/site-container"
 import { aboutSectionImage } from "@/data/remote-images"
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 import Image from "next/image"
 import { useLocale } from "@/components/providers/app-providers"
 
@@ -19,7 +21,7 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="section-ambient-in relative overflow-hidden bg-dark py-24 text-dark-foreground md:py-32 lg:py-40"
+      className="section-ambient-in relative overflow-hidden bg-dark py-16 text-dark-foreground md:py-24 lg:py-28"
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
@@ -30,7 +32,7 @@ export function AboutSection() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
+      <SiteContainer className="relative">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-10">
           <div className="lg:col-span-5 lg:sticky lg:top-28">
             <Reveal variant="image">
@@ -44,6 +46,8 @@ export function AboutSection() {
                     src={aboutSectionImage}
                     alt="Katrina Dragonfly — editorial portrait"
                     fill
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                     className="object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
                     style={{ objectPosition: "50% 18%" }}
                     sizes="(max-width: 1024px) 100vw, 42vw"
@@ -95,7 +99,7 @@ export function AboutSection() {
             </Reveal>
           </div>
         </div>
-      </div>
+      </SiteContainer>
     </section>
   )
 }

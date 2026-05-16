@@ -1,12 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { siteContainerClass } from "@/components/layout/site-container"
 import { cn } from "@/lib/cn"
 import { useLocale, useSiteReveal } from "@/components/providers/app-providers"
-
-const POSTER_SHARP =
-  "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=2880&q=88"
 
 const VIDEO_MP4 = "/videos/hero-katrina.mp4"
 /** Локальный loop: editorial fashion (Mixkit «Fashion model… white background», free license) — замените на свой ролик при необходимости */
@@ -15,32 +13,132 @@ const VIDEO_LOOP_LOCAL = "/videos/hero-loop.mp4"
 const REMOTE_FALLBACK_MP4 =
   "https://assets.mixkit.co/videos/43276/43276-720.mp4"
 
+const SCROLL_HINT_HIDE_PX = 96
+/** Если autoplay не дал `playing`, всё равно убираем blur с кадра видео */
+const VIDEO_SHARP_FALLBACK_MS = 2800
+
 export function HeroSection() {
   const { t, locale } = useLocale()
-  const { heroReveal, reducedMotion } = useSiteReveal()
+  const { heroReveal, contentReveal, reducedMotion, notifyHeroReady } = useSiteReveal()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [scrollHintVisible, setScrollHintVisible] = useState(true)
+  /** Пока false — размытие на самом видео (первый кадр ролика), не отдельная фотка */
+  const [videoSharp, setVideoSharp] = useState(false)
 
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
+    v.setAttribute("fetchpriority", "high")
     void v.play().catch(() => {})
   }, [])
 
-  const motionOn = heroReveal && !reducedMotion
+  useEffect(() => {
+    if (reducedMotion) setVideoSharp(true)
+  }, [reducedMotion])
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+
+    const makeSharp = () => setVideoSharp(true)
+    v.addEventListener("playing", makeSharp)
+    v.addEventListener("error", makeSharp)
+
+    const fallback = window.setTimeout(makeSharp, VIDEO_SHARP_FALLBACK_MS)
+
+    return () => {
+      v.removeEventListener("playing", makeSharp)
+      v.removeEventListener("error", makeSharp)
+      window.clearTimeout(fallback)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (reducedMotion) return
+
+    let done = false
+    const signal = () => {
+      if (done) return
+      done = true
+      notifyHeroReady()
+    }
+
+    const v = videoRef.current
+    const onMediaReady = () => signal()
+
+    if (v) {
+      if (v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) onMediaReady()
+      v.addEventListener("loadeddata", onMediaReady)
+      v.addEventListener("canplay", onMediaReady)
+      v.addEventListener("error", onMediaReady)
+    }
+
+    return () => {
+      done = true
+      if (v) {
+        v.removeEventListener("loadeddata", onMediaReady)
+        v.removeEventListener("canplay", onMediaReady)
+        v.removeEventListener("error", onMediaReady)
+      }
+    }
+  }, [reducedMotion, notifyHeroReady])
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrollHintVisible(window.scrollY < SCROLL_HINT_HIDE_PX)
+    }
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  const scrollToIntro = useCallback(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const el = document.getElementById("intro")
+    if (el) {
+      el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
+    }
+  }, [])
+
+  const mediaMotion = heroReveal && !reducedMotion
+  const copyMotion = contentReveal && !reducedMotion
+  const lines: string[] =
+    Array.isArray(t.hero.titleLines) && t.hero.titleLines.length > 0
+      ? [...t.hero.titleLines]
+      : [t.hero.metaName]
+  const titleLineStartMs = 140
+  const titleLineStaggerMs = 95
+  const titleBlockDelayEnd = titleLineStartMs + Math.max(0, lines.length - 1) * titleLineStaggerMs
+
+  const titleSizeClass =
+    locale === "ua"
+      ? "text-[clamp(1.65rem,6.5vw,3.35rem)] sm:text-[clamp(2.1rem,7.5vw,4.1rem)] md:text-[clamp(2.45rem,5.2vw,5.25rem)] lg:text-[clamp(2.65rem,4.6vw,5.75rem)]"
+      : "text-[clamp(1.95rem,7.5vw,4.75rem)] sm:text-[clamp(2.2rem,6.5vw,5.5rem)] md:text-[clamp(2.75rem,6.5vw,7rem)] lg:text-[clamp(3.1rem,6.5vw,8rem)]"
+
+  /** UA: каждая строка titleLines — одна линия (без переноса «Присутність»); ширина почти на весь контейнер */
+  const titleMaxClass = locale === "ua" ? "max-w-full" : "max-w-[min(100%,46rem)]"
+
+  const lineLeading = locale === "ua" ? "leading-[0.94]" : "leading-[0.95]"
 
   return (
     <section
       id="top"
-      className="relative h-[100svh] min-h-[100svh] w-full overflow-hidden bg-neutral-950 text-background"
+      className="relative min-h-[100svh] w-full overflow-x-clip bg-neutral-950 text-background"
       aria-label="Hero"
     >
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-950">
         <video
           ref={videoRef}
           className={cn(
-            "absolute left-0 top-0 h-full min-h-[100svh] w-full object-cover object-[32%_27%] sm:object-[34%_27%] md:object-[38%_28%] lg:w-[132%] lg:max-w-none lg:object-[76%_30%] xl:w-[142%] xl:object-[80%_30%]",
-            motionOn && "animate-hero-media-in",
-            !motionOn && !reducedMotion && "opacity-0",
+            "absolute left-0 top-0 z-0 h-full min-h-[100svh] w-full object-cover object-[32%_27%] sm:object-[34%_27%] md:object-[38%_28%] lg:w-[132%] lg:max-w-none lg:object-[76%_30%] xl:w-[142%] xl:object-[80%_30%]",
+            !videoSharp &&
+              "blur-2xl brightness-[0.88] contrast-[1.04] saturate-[0.95] motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
+            videoSharp &&
+              "blur-0 brightness-100 contrast-100 saturate-100 motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
+            mediaMotion && "animate-hero-media-in",
+            !mediaMotion && !reducedMotion && "opacity-0",
             reducedMotion && heroReveal && "opacity-100"
           )}
           autoPlay
@@ -48,7 +146,6 @@ export function HeroSection() {
           playsInline
           loop
           preload="auto"
-          poster={POSTER_SHARP}
           aria-label="Hero background video"
         >
           <source src={VIDEO_MP4} type="video/mp4" />
@@ -58,83 +155,62 @@ export function HeroSection() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/50 via-black/30 to-black/65"
+        className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-black/50 via-black/30 to-black/65"
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto box-border flex h-[100svh] min-h-[100svh] w-full max-w-[1440px] flex-col justify-center px-8 pb-16 pt-28 sm:px-10 md:pb-20 md:pt-32 lg:px-14 lg:pt-36">
-        <div className="w-full max-w-[min(42rem,100%)]">
-          <div className="mb-5 overflow-hidden">
-            <p
-              className={cn(
-                "label-sm text-background/55",
-                motionOn && "animate-hero-rise-soft",
-                reducedMotion && heroReveal && "opacity-100",
-                !heroReveal && "opacity-0"
-              )}
-              style={{ animationDelay: reducedMotion ? undefined : "40ms" }}
-            >
-              {t.hero.kicker}
-            </p>
-          </div>
-
-          <div className="mb-6 overflow-hidden">
-            <p
-              className={cn(
-                "label-xs text-background/45",
-                motionOn && "animate-hero-rise-soft",
-                reducedMotion && heroReveal && "opacity-100",
-                !heroReveal && "opacity-0"
-              )}
-              style={{ animationDelay: reducedMotion ? undefined : "120ms" }}
-            >
-              {t.hero.metaName}
-            </p>
-          </div>
-
-          <div className="mb-6 max-w-full space-y-1">
-            <div className="overflow-hidden">
-              <h1
-                className={cn(
-                  "display-xl max-w-full text-pretty leading-[0.92] tracking-tight text-background break-words",
-                  locale === "ua"
-                    ? "text-[clamp(1.55rem,7.2vw,5.25rem)]"
-                    : "text-[clamp(2.1rem,9vw,6.25rem)]",
-                  motionOn && "animate-stagger",
-                  reducedMotion && heroReveal && "opacity-100",
-                  !heroReveal && "opacity-0"
-                )}
-                style={{ animationDelay: reducedMotion ? undefined : "200ms" }}
-              >
-                {t.hero.titleLine1}
-              </h1>
+      <div
+        className={cn(
+          siteContainerClass,
+          "relative z-10 box-border flex min-h-[100svh] flex-col justify-center pt-24 pb-20 sm:pt-28 sm:pb-24 md:min-h-[100svh] md:pt-32 md:pb-16 lg:pt-36"
+        )}
+      >
+        <div className={cn("w-full min-w-0", titleMaxClass)}>
+          <h1
+            className={cn(
+              "m-0 mb-6 max-w-full text-pretty tracking-tight text-background break-words uppercase",
+              titleMaxClass
+            )}
+          >
+            <div className="space-y-1">
+              {lines.map((line, index) => (
+                <span
+                  key={`${locale}-${index}`}
+                  className={cn(
+                    "display-xl block max-w-full tracking-tight",
+                    locale === "ua"
+                      ? "whitespace-nowrap"
+                      : "text-pretty break-words [overflow-wrap:anywhere]",
+                    titleSizeClass,
+                    lineLeading,
+                    copyMotion && "animate-hero-copy-in",
+                    reducedMotion && contentReveal && "opacity-100",
+                    !contentReveal && !reducedMotion && "opacity-0"
+                  )}
+                  style={{
+                    animationDelay:
+                      reducedMotion || !contentReveal
+                        ? undefined
+                        : `${titleLineStartMs + index * titleLineStaggerMs}ms`,
+                  }}
+                >
+                  {line}
+                </span>
+              ))}
             </div>
-            <div className="overflow-hidden">
-              <h1
-                className={cn(
-                  "display-xl max-w-full text-pretty leading-[0.92] tracking-tight text-background break-words",
-                  locale === "ua"
-                    ? "text-[clamp(1.55rem,7.2vw,5.25rem)]"
-                    : "text-[clamp(2.1rem,9vw,6.25rem)]",
-                  motionOn && "animate-stagger",
-                  reducedMotion && heroReveal && "opacity-100",
-                  !heroReveal && "opacity-0"
-                )}
-                style={{ animationDelay: reducedMotion ? undefined : "300ms" }}
-              >
-                {t.hero.titleLine2}
-              </h1>
-            </div>
-          </div>
+          </h1>
 
           <div
             className={cn(
               "mb-4",
-              motionOn && "animate-hero-rise-soft",
-              reducedMotion && heroReveal && "opacity-100",
-              !heroReveal && "opacity-0"
+              copyMotion && "animate-hero-copy-in",
+              reducedMotion && contentReveal && "opacity-100",
+              !contentReveal && !reducedMotion && "opacity-0"
             )}
-            style={{ animationDelay: reducedMotion ? undefined : "420ms" }}
+            style={{
+              animationDelay:
+                reducedMotion || !contentReveal ? undefined : `${titleBlockDelayEnd + 50}ms`,
+            }}
           >
             <div className="mb-4 h-px w-14 bg-background/35" />
             <p className="label-sm text-background/60">{t.hero.disciplines}</p>
@@ -142,34 +218,57 @@ export function HeroSection() {
 
           <p
             className={cn(
-              "mb-10 max-w-xl text-base text-background/50 md:text-lg",
-              motionOn && "animate-hero-rise-soft",
-              reducedMotion && heroReveal && "opacity-100",
-              !heroReveal && "opacity-0"
+              "mb-6 max-w-xl text-base text-background/50 md:text-lg",
+              copyMotion && "animate-hero-copy-in",
+              reducedMotion && contentReveal && "opacity-100",
+              !contentReveal && !reducedMotion && "opacity-0"
             )}
-            style={{ animationDelay: reducedMotion ? undefined : "500ms" }}
+            style={{
+              animationDelay:
+                reducedMotion || !contentReveal ? undefined : `${titleBlockDelayEnd + 130}ms`,
+            }}
           >
             {t.hero.location}
           </p>
 
+          <div className="mb-8 overflow-hidden">
+            <p
+              className={cn(
+                "label-sm text-background/55",
+                copyMotion && "animate-hero-copy-in",
+                reducedMotion && contentReveal && "opacity-100",
+                !contentReveal && !reducedMotion && "opacity-0"
+              )}
+              style={{
+                animationDelay:
+                  reducedMotion || !contentReveal ? undefined : `${titleBlockDelayEnd + 210}ms`,
+              }}
+            >
+              {t.hero.kicker}
+            </p>
+          </div>
+
           <div
             className={cn(
               "flex max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap",
-              motionOn && "animate-hero-rise-soft",
-              reducedMotion && heroReveal && "opacity-100",
-              !heroReveal && "opacity-0"
+              copyMotion && "animate-hero-copy-in",
+              reducedMotion && contentReveal && "opacity-100",
+              !contentReveal && !reducedMotion && "opacity-0"
             )}
-            style={{ animationDelay: reducedMotion ? undefined : "620ms" }}
+            style={{
+              animationDelay:
+                reducedMotion || !contentReveal ? undefined : `${titleBlockDelayEnd + 300}ms`,
+            }}
           >
             <Link
               href="#contact"
-              className="inline-flex h-12 min-w-[12rem] max-w-full shrink-0 items-center justify-center bg-background px-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors duration-300 hover:bg-background/90"
+              className="inline-flex h-12 min-w-[12rem] max-w-full shrink-0 items-center justify-center bg-background px-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground transition-[color,background-color,transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent active:scale-[0.98] active:bg-background/90 [@media(hover:hover)]:motion-safe:hover:-translate-y-0.5 [@media(hover:hover)]:hover:bg-background/88 [@media(hover:hover)]:hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08),0_12px_40px_-18px_rgba(0,0,0,0.35)]"
             >
               {t.hero.bookShoot}
             </Link>
             <Link
               href="#portfolio"
-              className="inline-flex h-12 min-w-[12rem] max-w-full shrink-0 items-center justify-center border border-background/35 bg-transparent px-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-background transition-all duration-300 hover:border-background/60 hover:bg-background/10"
+              className="inline-flex h-12 min-w-[12rem] max-w-full shrink-0 items-center justify-center border border-background/35 bg-transparent px-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-background transition-[color,background-color,border-color,transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent active:scale-[0.98] active:border-background/55 active:bg-background/10 [@media(hover:hover)]:motion-safe:hover:-translate-y-0.5 [@media(hover:hover)]:hover:border-background/60 [@media(hover:hover)]:hover:bg-background/14 [@media(hover:hover)]:hover:shadow-[0_12px_36px_-20px_rgba(0,0,0,0.45)]"
             >
               {t.hero.viewPortfolio}
             </Link>
@@ -179,15 +278,57 @@ export function HeroSection() {
 
       <div
         className={cn(
-          "pointer-events-none absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3",
-          motionOn && "animate-hero-rise-soft",
-          reducedMotion && heroReveal && "opacity-100",
-          !heroReveal && "opacity-0"
+          "absolute bottom-28 left-1/2 z-10 flex max-sm:bottom-32 -translate-x-1/2 flex-col items-center gap-2.5 sm:bottom-10 md:bottom-8",
+          !contentReveal && !reducedMotion && "pointer-events-none opacity-0",
+          reducedMotion && contentReveal && "opacity-100",
+          reducedMotion && contentReveal && !scrollHintVisible && "pointer-events-none opacity-0"
         )}
-        style={{ animationDelay: reducedMotion ? undefined : "780ms" }}
       >
-        <span className="label-xs text-background/40">{t.hero.scroll}</span>
-        <div className="h-8 w-px bg-gradient-to-b from-background/40 to-transparent" />
+        <div
+          className={cn(
+            copyMotion && "animate-hero-copy-in",
+            !reducedMotion &&
+              contentReveal &&
+              cn(
+                "transition-[opacity,transform] duration-[480ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+                scrollHintVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"
+              )
+          )}
+          style={{
+            animationDelay:
+              reducedMotion || !contentReveal ? undefined : `${titleBlockDelayEnd + 380}ms`,
+          }}
+        >
+          <button
+            type="button"
+            onClick={scrollToIntro}
+            className={cn(
+              "group flex flex-col items-center gap-2.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/45 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              reducedMotion && "pointer-events-auto"
+            )}
+            aria-label={t.hero.scroll}
+          >
+            <span className="label-xs text-background/45 transition-colors duration-300 group-hover:text-background/70">
+              {t.hero.scroll}
+            </span>
+            <span className="relative flex h-9 w-px overflow-hidden">
+              <span
+                className={cn(
+                  "absolute inset-x-0 top-0 h-full w-px origin-top bg-gradient-to-b from-background/55 to-transparent",
+                  !reducedMotion && "hero-scroll-line-motion"
+                )}
+                aria-hidden
+              />
+            </span>
+            <span
+              className={cn(
+                "inline-block h-1.5 w-1.5 rotate-45 border-b border-r border-background/50",
+                !reducedMotion && "hero-scroll-chevron-motion"
+              )}
+              aria-hidden
+            />
+          </button>
+        </div>
       </div>
     </section>
   )

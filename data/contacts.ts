@@ -7,13 +7,13 @@ export type ContactChannelId = "instagram" | "telegram" | "email" | "phone"
 export const contactChannels = [
   {
     id: "instagram" as const,
-    href: "https://www.instagram.com/katrina.dragonfly",
-    value: "@katrina.dragonfly",
+    href: "https://www.instagram.com/katrinadragonflay8/",
+    value: "@katrinadragonflay8",
   },
   {
     id: "telegram" as const,
-    href: "https://t.me/katrinadragonfly",
-    value: "@katrinadragonfly",
+    href: "https://t.me/dylanfoxi",
+    value: "@dylanfoxi",
   },
   {
     id: "email" as const,

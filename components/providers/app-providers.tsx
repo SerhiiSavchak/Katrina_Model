@@ -7,6 +7,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react"
@@ -82,9 +83,13 @@ type SiteRevealContextValue = {
   phase: SitePhase
   /** True when hero should run its entrance (loader fading / done). */
   heroReveal: boolean
+  /** True after лоадер полностью снят — копирайт/кнопки hero, чтобы анимация не шла под оверлеем. */
+  contentReveal: boolean
   /** True while loader overlay is mounted (including fade-out). */
   loaderMounted: boolean
   reducedMotion: boolean
+  /** Call when hero poster / video first frame (or fallback) is ready — idempotent. */
+  notifyHeroReady: () => void
 }
 
 const SiteRevealContext = createContext<SiteRevealContextValue | null>(null)
@@ -95,12 +100,13 @@ export function useSiteReveal() {
   return ctx
 }
 
-const LOADER_HOLD_MS = 1450
+const LOADER_MAX_WAIT_MS = 2000
 const LOADER_FADE_MS = 520
 
 export function SiteRevealProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<SitePhase>("loading")
   const [reducedMotion, setReducedMotion] = useState(false)
+  const revealGateRef = useRef<(() => void) | null>(null)
 
   useLayoutEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -127,9 +133,28 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (reducedMotion) return
-    const tHold = window.setTimeout(() => setPhase("reveal"), LOADER_HOLD_MS)
-    return () => window.clearTimeout(tHold)
+
+    let finished = false
+    const finish = () => {
+      if (finished) return
+      finished = true
+      window.clearTimeout(maxTimer)
+      setPhase("reveal")
+    }
+
+    const maxTimer = window.setTimeout(finish, LOADER_MAX_WAIT_MS)
+    revealGateRef.current = finish
+
+    return () => {
+      finished = true
+      window.clearTimeout(maxTimer)
+      revealGateRef.current = null
+    }
   }, [reducedMotion])
+
+  const notifyHeroReady = useCallback(() => {
+    revealGateRef.current?.()
+  }, [])
 
   useEffect(() => {
     if (phase !== "reveal" || reducedMotion) return
@@ -139,9 +164,10 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<SiteRevealContextValue>(() => {
     const heroReveal = phase !== "loading"
+    const contentReveal = phase === "ready"
     const loaderMounted = phase !== "ready"
-    return { phase, heroReveal, loaderMounted, reducedMotion }
-  }, [phase, reducedMotion])
+    return { phase, heroReveal, contentReveal, loaderMounted, reducedMotion, notifyHeroReady }
+  }, [phase, reducedMotion, notifyHeroReady])
 
   return (
     <SiteRevealContext.Provider value={value}>{children}</SiteRevealContext.Provider>

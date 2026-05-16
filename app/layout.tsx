@@ -52,11 +52,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} bg-background`}>
-      <body className="flex min-h-screen flex-col overflow-x-clip antialiased font-sans">
+      <head>
+        <link rel="preload" href="/videos/hero-katrina.mp4" as="video" type="video/mp4" />
+      </head>
+      <body className="flex min-h-screen flex-col antialiased font-sans">
         <AppProviders>
           <SiteLoader />
           <Header />
-          <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
+          <main className="min-w-0 flex-1">{children}</main>
           <Footer />
         </AppProviders>
       </body>

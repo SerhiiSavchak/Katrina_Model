@@ -2,22 +2,24 @@
 
 import { Reveal } from "@/components/ui/reveal"
 import { contactChannels } from "@/data/contacts"
+import { SiteContainer } from "@/components/layout/site-container"
 import { useLocale } from "@/components/providers/app-providers"
 
 const serviceNumbers = ["01", "02", "03", "04", "05", "06", "07"] as const
 
 const instagramHref =
-  contactChannels.find((c) => c.id === "instagram")?.href ?? "https://www.instagram.com/katrina.dragonfly"
+  contactChannels.find((c) => c.id === "instagram")?.href ??
+  "https://www.instagram.com/katrinadragonflay8/"
 const telegramHref =
-  contactChannels.find((c) => c.id === "telegram")?.href ?? "https://t.me/katrinadragonfly"
+  contactChannels.find((c) => c.id === "telegram")?.href ?? "https://t.me/dylanfoxi"
 
 export function BookingSection() {
   const { t } = useLocale()
 
   return (
-    <section id="booking" className="section-ambient-in bg-card py-24 md:py-32 lg:py-40">
-      <div className="mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
-        <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+    <section id="booking" className="section-ambient-in bg-card py-16 md:py-24 lg:py-28">
+      <SiteContainer>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <Reveal variant="text">
               <p className="label-sm mb-6 text-foreground/35">{t.booking.label}</p>
@@ -65,7 +67,7 @@ export function BookingSection() {
             </Reveal>
           </div>
 
-          <div className="border-t border-foreground/10 pt-10 lg:col-span-6 lg:col-start-7 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+          <div className="border-t border-foreground/10 pt-8 lg:col-span-6 lg:col-start-7 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
             <Reveal variant="text" delay={200}>
               <div>
                 {serviceNumbers.map((num) => (
@@ -88,7 +90,7 @@ export function BookingSection() {
             </Reveal>
           </div>
         </div>
-      </div>
+      </SiteContainer>
     </section>
   )
 }

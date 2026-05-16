@@ -1,115 +1,178 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/cn"
-import type { Story } from "@/data/stories"
-import type { TranslationTree } from "@/data/translations"
-import Image from "next/image"
-import { useEffect, useId, useRef } from "react"
+import { EditorialModal } from "@/components/ui/editorial-modal";
 
-type StoryModalProps = {
-  story: Story | null
-  t: TranslationTree
-  onClose: () => void
-}
+import { cn } from "@/lib/cn";
 
-export function StoryModal({ story, t, onClose }: StoryModalProps) {
-  const closeRef = useRef<HTMLButtonElement>(null)
-  const titleId = useId()
+import type { Story } from "@/data/stories";
 
-  useEffect(() => {
-    if (!story) return
-    const prevBody = document.body.style.overflow
-    const prevHtml = document.documentElement.style.overflow
-    document.body.style.overflow = "hidden"
-    document.documentElement.style.overflow = "hidden"
-    queueMicrotask(() => closeRef.current?.focus())
+import type { TranslationTree } from "@/data/translations";
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", onKey)
-    return () => {
-      document.body.style.overflow = prevBody
-      document.documentElement.style.overflow = prevHtml
-      window.removeEventListener("keydown", onKey)
-    }
-  }, [story, onClose])
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 
-  if (!story) return null
+import Image from "next/image";
 
-  const copy = t.stories.items[story.id as keyof typeof t.stories.items]
-  const title = copy?.title ?? story.title
-  const description = copy?.description ?? story.description
-  const category = copy?.category ?? story.category
-  const tags = copy?.tags ?? [category]
+import { useEffect, useId, useRef, useState } from "react";
+
+const FALLBACK = "/images/stories/story-01.jpg";
+
+function StorySlideImage({
+  src,
+
+  pos,
+
+  title,
+
+  index,
+}: {
+  src: string;
+
+  pos: string;
+
+  title: string;
+
+  index: number;
+}) {
+  const [useFallback, setUseFallback] = useState(false);
 
   return (
-    <div
-      className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
-      role="dialog"
-      aria-modal="true"
+    <Image
+      src={useFallback ? FALLBACK : src}
+      alt={`${title} — ${index + 1}`}
+      fill
+      placeholder="blur"
+      blurDataURL={IMAGE_BLUR_DATA_URL}
+      className="object-cover motion-safe:transition-transform motion-safe:duration-[1.25s] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      style={{ objectPosition: pos }}
+      sizes="(max-width: 640px) 44vw, (max-width: 1024px) 24vw, 220px"
+      onError={() => setUseFallback(true)}
+    />
+  );
+}
+
+type StoryModalProps = {
+  story: Story | null;
+
+  t: TranslationTree;
+
+  onClose: () => void;
+};
+
+export function StoryModal({ story, t, onClose }: StoryModalProps) {
+  const titleId = useId();
+
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!story) return;
+
+    queueMicrotask(() => closeRef.current?.focus());
+  }, [story]);
+
+  if (!story) return null;
+
+  const copy = t.stories.items[story.id as keyof typeof t.stories.items];
+
+  const title = copy?.title ?? story.title;
+
+  const description = copy?.description ?? story.description;
+
+  const category = copy?.category ?? story.category;
+
+  const tags = copy?.tags ?? [category];
+
+  const meta = [copy?.year, copy?.location].filter(Boolean).join(" · ");
+
+  return (
+    <EditorialModal
+      open
+      onClose={onClose}
+      backdropLabel={t.stories.modalBackdropClose}
       aria-labelledby={titleId}
+      panelClassName="max-w-[min(96vw,58rem)] sm:max-h-[min(94dvh,48rem)]"
     >
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
-        aria-label={t.stories.modalBackdropClose}
-        onClick={onClose}
-      />
+      <div className="relative flex min-h-0 max-h-[inherit] flex-col sm:h-[min(88dvh,42rem)] sm:overflow-hidden">
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          className={cn(
+            "group/close absolute right-3 top-3 z-20 rounded-sm px-3 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-foreground/55 transition-[color,transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] hover:text-foreground motion-safe:hover:-translate-y-px active:scale-[0.98] sm:right-5 sm:top-4",
 
-      <div
-        className={cn(
-          "relative z-10 m-4 flex max-h-[min(90dvh,44rem)] w-full max-w-lg flex-col overflow-y-auto border border-foreground/12 bg-background",
-          "pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] shadow-[0_28px_90px_-36px_rgba(0,0,0,0.4)] sm:m-6 sm:max-w-2xl"
-        )}
-      >
-        <div className="flex items-start justify-between gap-4 px-5 pt-4 sm:px-7 sm:pt-5">
-          <div className="min-w-0">
-            <p className="label-xs text-foreground/35">{t.stories.modalLabel}</p>
-            <p className="label-xs mt-2 text-foreground/45">{category}</p>
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          )}
+        >
+          <span className="absolute -inset-0.5" aria-hidden />
+
+          <span className="relative border-b border-transparent pb-0.5 transition-[border-color] duration-500 group-hover/close:border-foreground/40 motion-safe:active:translate-y-px">
+            {t.ui.close}
+          </span>
+        </button>
+
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain max-sm:min-h-0 sm:overflow-hidden">
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-6 px-5 pb-5 pt-14 sm:min-h-0 sm:grid-cols-2 sm:grid-rows-[minmax(0,1fr)] sm:gap-5 sm:overflow-hidden sm:p-6 sm:pb-5 sm:pr-11 sm:pt-14">
+            <div className="min-h-0 sm:col-start-2 sm:row-start-1 sm:flex sm:flex-col sm:justify-center sm:overflow-hidden sm:pr-1">
+              <h2
+                id={titleId}
+                className="display-md max-w-full text-pretty text-2xl text-foreground sm:text-[clamp(1.35rem,2vw,1.85rem)]"
+              >
+                {title}
+              </h2>
+
+              {meta ? (
+                <p className="label-xs mt-2 text-foreground/32 tabular-nums sm:mt-2">
+                  {meta}
+                </p>
+              ) : null}
+
+              <p className="mt-4 max-w-prose text-pretty text-sm leading-relaxed text-foreground/52 sm:mt-3 sm:text-[0.875rem] sm:leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            <div
+              className="min-h-0 sm:col-start-1 sm:row-start-1 sm:flex sm:items-center sm:overflow-hidden"
+              role="region"
+              aria-label={t.stories.collectionAria}
+            >
+              <div className="grid w-full grid-cols-2 gap-2 sm:max-h-[min(65vh,26rem)] sm:overflow-hidden">
+                {story.images.map((src, index) => {
+                  const pos = story.objectPositions[index] ?? "50% 28%"
+
+                  return (
+                    <div
+                      key={`${story.id}-${index}`}
+                      className="relative aspect-[4/5] min-h-0 w-full overflow-hidden bg-muted"
+                    >
+                      <StorySlideImage
+                        src={src}
+                        pos={pos}
+                        title={title}
+                        index={index}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            className="shrink-0 border border-foreground/15 px-3 py-2 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground transition-colors duration-300 hover:border-foreground/35 hover:bg-foreground/[0.04]"
-          >
-            {t.stories.modalClose}
-          </button>
-        </div>
 
-        <div className="relative mx-5 mt-5 aspect-[16/10] overflow-hidden bg-card sm:mx-7 sm:mt-6">
-          <Image
-            src={story.image}
-            alt={title}
-            fill
-            className="object-cover"
-            style={{ objectPosition: story.objectPosition }}
-            sizes="(max-width: 640px) 92vw, 36rem"
-          />
-        </div>
-
-        <div className="px-5 pb-6 pt-6 sm:px-7 sm:pb-8">
-          <h3 id={titleId} className="display-md text-pretty text-2xl text-foreground sm:text-3xl">
-            {title}
-          </h3>
-          <p className="mt-4 max-w-prose text-pretty text-sm leading-relaxed text-foreground/55 sm:text-base">
-            {description}
-          </p>
           {tags.length > 0 ? (
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="border border-foreground/10 px-2.5 py-1 text-[9px] uppercase tracking-[0.16em] text-foreground/45"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
+            <div className="shrink-0 border-t border-foreground/10 px-5 py-4 sm:px-6 sm:py-4">
+              <ul className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="border border-foreground/10 px-2.5 py-1 text-[9px] uppercase tracking-[0.16em] text-foreground/45"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null}
         </div>
       </div>
-    </div>
-  )
+    </EditorialModal>
+  );
 }

@@ -2,7 +2,9 @@
 
 import { Reveal } from "@/components/ui/reveal"
 import { ScrollParallax } from "@/components/ui/scroll-parallax"
+import { SiteContainer } from "@/components/layout/site-container"
 import { introSectionImage } from "@/data/remote-images"
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 import Image from "next/image"
 import { useLocale } from "@/components/providers/app-providers"
 
@@ -10,8 +12,8 @@ export function IntroSection() {
   const { t } = useLocale()
 
   return (
-    <section className="section-ambient-in relative bg-background py-24 md:py-32 lg:py-40">
-      <div className="mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
+    <section id="intro" className="section-ambient-in relative bg-background py-16 md:py-24 lg:py-28">
+      <SiteContainer>
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <Reveal variant="text">
@@ -46,8 +48,10 @@ export function IntroSection() {
                   src={introSectionImage}
                   alt="Katrina Dragonfly — editorial portrait"
                   fill
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                   className="object-cover transition-transform duration-[1.25s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                  style={{ objectPosition: "48% 22%" }}
+                  style={{ objectPosition: "50% 42%" }}
                   sizes="(max-width: 1024px) 100vw, 40vw"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/[0.05]" />
@@ -56,7 +60,7 @@ export function IntroSection() {
             </Reveal>
           </div>
         </div>
-      </div>
+      </SiteContainer>
     </section>
   )
 }

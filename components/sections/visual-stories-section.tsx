@@ -3,22 +3,45 @@
 import { Reveal } from "@/components/ui/reveal"
 import { MobileSlider } from "@/components/ui/mobile-slider"
 import { ScrollParallax } from "@/components/ui/scroll-parallax"
+import { SiteContainer } from "@/components/layout/site-container"
 import { StoryModal } from "@/components/ui/story-modal"
 import { stories, type Story } from "@/data/stories"
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 import Image from "next/image"
 import { useState } from "react"
 import { useLocale } from "@/components/providers/app-providers"
+
+const STORY_COVER_FALLBACK = "/images/stories/story-01.jpg"
+
+function StoryCoverImage({ story, title, sizes }: { story: Story; title: string; sizes: string }) {
+  const primary = story.images[0] ?? ""
+  const [src, setSrc] = useState(primary)
+  const pos = story.objectPositions[0] ?? "50% 28%"
+  return (
+    <Image
+      src={src}
+      alt={title}
+      fill
+      placeholder="blur"
+      blurDataURL={IMAGE_BLUR_DATA_URL}
+      className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
+      style={{ objectPosition: pos }}
+      sizes={sizes}
+      onError={() => setSrc(STORY_COVER_FALLBACK)}
+    />
+  )
+}
 
 export function VisualStoriesSection() {
   const { t } = useLocale()
   const [openStory, setOpenStory] = useState<Story | null>(null)
 
   return (
-    <section className="section-ambient-in bg-background py-24 md:py-32 lg:py-40">
+    <section id="stories" className="section-ambient-in bg-background py-16 md:py-24 lg:py-28">
       <StoryModal story={openStory} t={t} onClose={() => setOpenStory(null)} />
 
-      <div className="mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
-        <div className="mb-12 max-w-3xl md:mb-16 lg:mb-20">
+      <SiteContainer>
+        <div className="mb-10 max-w-3xl md:mb-14 lg:mb-16">
           <Reveal variant="text">
             <p className="label-sm mb-6 text-foreground/35">{t.stories.label}</p>
           </Reveal>
@@ -57,15 +80,13 @@ export function VisualStoriesSection() {
                       intensity={8}
                       className="group relative aspect-[16/10] overflow-hidden bg-card"
                     >
-                      <Image
-                        src={story.image}
-                        alt={title}
-                        fill
-                        className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                        style={{ objectPosition: story.objectPosition }}
-                        sizes="(max-width: 1024px) 90vw, 60vw"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/[0.05]" />
+                        <StoryCoverImage
+                          key={story.id}
+                          story={story}
+                          title={title}
+                          sizes="(max-width: 1024px) 90vw, 60vw"
+                        />
+                      <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 [@media(hover:hover)]:group-hover:bg-foreground/[0.05]" />
                     </ScrollParallax>
 
                     <div className="px-0.5 text-center sm:text-left">
@@ -87,12 +108,12 @@ export function VisualStoriesSection() {
                       <button
                         type="button"
                         onClick={() => setOpenStory(story)}
-                        className="group/link inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.1em] text-foreground"
+                        className="group/link inline-flex min-h-11 items-center gap-3 rounded-sm text-[11px] uppercase tracking-[0.1em] text-foreground transition-[color,transform,opacity] duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] active:opacity-90 [@media(hover:hover)]:hover:text-foreground/90"
                       >
-                        <span className="border-b border-foreground/25 pb-0.5 transition-colors duration-500 group-hover/link:border-foreground">
+                        <span className="border-b border-foreground/25 pb-0.5 transition-[border-color,transform] duration-500 motion-safe:[@media(hover:hover)]:group-hover/link:translate-x-0.5 [@media(hover:hover)]:group-hover/link:border-foreground">
                           {t.stories.viewStory}
                         </span>
-                        <span className="text-foreground/30 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:translate-x-1.5">
+                        <span className="text-foreground/30 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] motion-safe:[@media(hover:hover)]:group-hover/link:translate-x-2">
                           &rarr;
                         </span>
                       </button>
@@ -123,15 +144,13 @@ export function VisualStoriesSection() {
                       intensity={11}
                       className="group relative aspect-[16/10] overflow-hidden bg-card"
                     >
-                      <Image
-                        src={story.image}
-                        alt={title}
-                        fill
-                        className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                        style={{ objectPosition: story.objectPosition }}
+                      <StoryCoverImage
+                        key={story.id}
+                        story={story}
+                        title={title}
                         sizes="(max-width: 1024px) 100vw, 60vw"
                       />
-                      <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/[0.05]" />
+                      <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 [@media(hover:hover)]:group-hover:bg-foreground/[0.05]" />
                     </ScrollParallax>
                   </div>
 
@@ -159,12 +178,12 @@ export function VisualStoriesSection() {
                     <button
                       type="button"
                       onClick={() => setOpenStory(story)}
-                      className="group/link inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.1em] text-foreground"
+                      className="group/link inline-flex min-h-11 items-center gap-3 rounded-sm text-[11px] uppercase tracking-[0.1em] text-foreground transition-[color,transform,opacity] duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] active:opacity-90 [@media(hover:hover)]:hover:text-foreground/90"
                     >
-                      <span className="border-b border-foreground/25 pb-0.5 transition-colors duration-500 group-hover/link:border-foreground">
+                      <span className="border-b border-foreground/25 pb-0.5 transition-[border-color,transform] duration-500 motion-safe:[@media(hover:hover)]:group-hover/link:translate-x-0.5 [@media(hover:hover)]:group-hover/link:border-foreground">
                         {t.stories.viewStory}
                       </span>
-                      <span className="text-foreground/30 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:translate-x-1.5">
+                      <span className="text-foreground/30 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] motion-safe:[@media(hover:hover)]:group-hover/link:translate-x-2">
                         &rarr;
                       </span>
                     </button>
@@ -174,7 +193,7 @@ export function VisualStoriesSection() {
             )
           })}
         </div>
-      </div>
+      </SiteContainer>
     </section>
   )
 }

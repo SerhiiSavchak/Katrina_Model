@@ -17,8 +17,15 @@ export const translations = {
     common: {
       swipeHint: "Swipe for more",
     },
+    ui: {
+      close: "Close",
+      next: "Next",
+      previous: "Previous",
+      details: "Details",
+    },
     nav: {
       portfolio: "Portfolio",
+      stories: "Stories",
       about: "About",
       booking: "Booking",
       merch: "Merch",
@@ -26,13 +33,15 @@ export const translations = {
       book: "Book",
       bookCta: "BOOK",
       bookNow: "Book now",
+      scrollToTop: "Scroll to top",
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
     },
     lang: { en: "EN", ua: "UA" },
     hero: {
       kicker: "International model",
       metaName: "Katrina Dragonfly",
-      titleLine1: "Editorial body.",
-      titleLine2: "Cinematic presence.",
+      titleLines: ["Editorial body.", "Cinematic presence."],
       disciplines: "Fashion · Studio · Beauty · Art nude",
       location: "Based in Ukraine / available in Europe",
       bookShoot: "Book a shoot",
@@ -52,6 +61,8 @@ export const translations = {
       sliderAria: "Swipe through portfolio projects",
       subtitle:
         "Selected work from fashion, studio, beauty and art nude photography",
+      modalLabel: "Selected work",
+      modalBackdropClose: "Close portfolio",
       categories: {
         All: "All",
         Fashion: "Fashion",
@@ -61,15 +72,47 @@ export const translations = {
         Editorial: "Editorial",
       } satisfies Record<PortfolioCategoryKey, string>,
       items: {
-        "1": { title: "Soft studio light" },
-        "2": { title: "Berlin editorial" },
-        "3": { title: "Beauty portrait" },
-        "4": { title: "Body study I" },
-        "5": { title: "Fashion test" },
-        "6": { title: "Morning series" },
-        "7": { title: "Studio form" },
-        "8": { title: "Kyiv fashion week" },
-        "9": { title: "Editorial figure" },
+        "1": {
+          title: "Soft studio light",
+          detail:
+            "Controlled studio light sculpting silhouette and fabric — quiet, precise, editorial.",
+          location: "Kyiv",
+        },
+        "2": {
+          title: "Berlin editorial",
+          detail: "Urban rhythm and tailoring in motion — a story told in negative space and contrast.",
+          location: "Berlin",
+        },
+        "3": {
+          title: "Beauty portrait",
+          detail: "Macro clarity on skin and gaze — restrained palette, luminous finish.",
+        },
+        "4": {
+          title: "Body study I",
+          detail: "Form-first composition — classical lines with a contemporary editorial lens.",
+        },
+        "5": {
+          title: "Fashion test",
+          detail: "Sharp styling and attitude — a test board that reads like a finished campaign frame.",
+        },
+        "6": {
+          title: "Morning series",
+          detail: "Early window light and soft grain — intimate studio pacing and calm gesture.",
+        },
+        "7": {
+          title: "Studio form",
+          detail: "Monochrome emphasis on posture and negative space — minimal set, maximum tension.",
+          location: "Kyiv",
+        },
+        "8": {
+          title: "Kyiv fashion week",
+          detail: "Runway energy distilled into stills — movement, tailoring, and crowd rhythm.",
+          location: "Kyiv",
+        },
+        "9": {
+          title: "Editorial figure",
+          detail: "Long lens compression and sculptural shadow — a single frame with cinematic depth.",
+        },
       },
     },
     stories: {
@@ -81,6 +124,7 @@ export const translations = {
       modalClose: "Close",
       modalBackdropClose: "Close story",
       modalLabel: "Selected story",
+      collectionAria: "Story image gallery",
       items: {
         "1": {
           title: "Soft studio session",
@@ -88,12 +132,16 @@ export const translations = {
             "A refined study of light and form in a controlled studio environment.",
           category: "Studio",
           tags: ["Studio", "Light", "Form"],
+          year: "2024",
+          location: "Kyiv studio",
         },
         "2": {
           title: "Berlin editorial mood",
           description: "Urban elegance captured in the streets and spaces of Berlin.",
           category: "Editorial",
           tags: ["Editorial", "Berlin", "Street"],
+          year: "2024",
+          location: "Berlin",
         },
         "3": {
           title: "Art nude series",
@@ -101,6 +149,8 @@ export const translations = {
             "Timeless artistic expression through classical form and a modern eye.",
           category: "Art nude",
           tags: ["Art nude", "Study", "Classic"],
+          year: "2023",
+          location: "Studio",
         },
       },
     },
@@ -165,6 +215,8 @@ export const translations = {
       sliderAria: "Swipe through merch",
       subtitle: "Small personal drops inspired by Katrina's visual world",
       order: "Order via Telegram",
+      modalBackdropClose: "Close product",
+      availability: "Limited drops — ask on Telegram for availability.",
       items: {
         "1": {
           name: "Signature print",
@@ -212,8 +264,15 @@ export const translations = {
     common: {
       swipeHint: "Гортайте далі",
     },
+    ui: {
+      close: "Закрити",
+      next: "Далі",
+      previous: "Назад",
+      details: "Деталі",
+    },
     nav: {
       portfolio: "Портфоліо",
+      stories: "Історії",
       about: "Про мене",
       booking: "Бронювання",
       merch: "Мерч",
@@ -221,13 +280,15 @@ export const translations = {
       book: "Запис",
       bookCta: "ЗАПИС",
       bookNow: "Записатися",
+      scrollToTop: "До початку сторінки",
+      openMenu: "Відкрити меню",
+      closeMenu: "Закрити меню",
     },
     lang: { en: "EN", ua: "UA" },
     hero: {
       kicker: "Міжнародна модель",
       metaName: "Katrina Dragonfly",
-      titleLine1: "Тіло — як редакція.",
-      titleLine2: "Присутність у кадрі.",
+      titleLines: ["Тіло.", "Кадр.", "Присутність."],
       disciplines: "Фешн · Студія · Бʼюті · Арт-ню",
       location: "База в Україні / зйомки в Європі",
       bookShoot: "Забронювати зйомку",
@@ -247,6 +308,8 @@ export const translations = {
       sliderAria: "Гортайте проєкти портфоліо",
       subtitle:
         "Відібрані роботи з фешн, студійної, бʼюті та арт-ню фотографії",
+      modalLabel: "Обрана робота",
+      modalBackdropClose: "Закрити портфоліо",
       categories: {
         All: "Усі",
         Fashion: "Фешн",
@@ -256,15 +319,48 @@ export const translations = {
         Editorial: "Редакція",
       } satisfies Record<PortfolioCategoryKey, string>,
       items: {
-        "1": { title: "Мʼяке студійне світло" },
-        "2": { title: "Берлінська редакція" },
-        "3": { title: "Бʼюті-портрет" },
-        "4": { title: "Студія тіла I" },
-        "5": { title: "Фешн-тест" },
-        "6": { title: "Ранкова серія" },
-        "7": { title: "Студійна форма" },
-        "8": { title: "Тиждень моди в Києві" },
-        "9": { title: "Редакційна фігура" },
+        "1": {
+          title: "Мʼяке студійне світло",
+          detail:
+            "Контрольоване студійне світло, що ліпить силует і тканину — тихо, точно, редакційно.",
+          location: "Київ",
+        },
+        "2": {
+          title: "Берлінська редакція",
+          detail:
+            "Міський ритм і крій у русі — історія через негативний простір і контраст.",
+          location: "Берлін",
+        },
+        "3": {
+          title: "Бʼюті-портрет",
+          detail: "Макро-чіткість шкіри й погляду — стримана палітра, сяйний фініш.",
+        },
+        "4": {
+          title: "Студія тіла I",
+          detail: "Композиція, де на першому плані форма — класичні лінії в сучасному редакційному погляді.",
+        },
+        "5": {
+          title: "Фешн-тест",
+          detail: "Гострий стайлінг і характер — тестова серія, що читається як кадр кампанії.",
+        },
+        "6": {
+          title: "Ранкова серія",
+          detail: "Світло ранкового вікна й мʼякий зерновий настрій — інтимний темп студії.",
+        },
+        "7": {
+          title: "Студійна форма",
+          detail: "Монохром на пластиці й негативному просторі — мінімум декорацій, максимум напруги.",
+          location: "Київ",
+        },
+        "8": {
+          title: "Тиждень моди в Києві",
+          detail: "Енергія подіуму в стоп-кадрі — рух, крій і ритм залу.",
+          location: "Київ",
+        },
+        "9": {
+          title: "Редакційна фігура",
+          detail: "Компресія довгою оптикою й скульптурна тінь — один кадр із кінематографічною глибиною.",
+        },
       },
     },
     stories: {
@@ -276,6 +372,7 @@ export const translations = {
       modalClose: "Закрити",
       modalBackdropClose: "Закрити історію",
       modalLabel: "Обрана історія",
+      collectionAria: "Галерея кадрів історії",
       items: {
         "1": {
           title: "Мʼяка студійна сесія",
@@ -283,12 +380,16 @@ export const translations = {
             "Витончене дослідження світла та форми в контрольованій студійній атмосфері.",
           category: "Студія",
           tags: ["Студія", "Світло", "Форма"],
+          year: "2024",
+          location: "Студія, Київ",
         },
         "2": {
           title: "Настрій редакції в Берліні",
           description: "Міська витонченість — на вулицях і в просторах Берліна.",
           category: "Редакція",
           tags: ["Редакція", "Берлін", "Місто"],
+          year: "2024",
+          location: "Берлін",
         },
         "3": {
           title: "Серія арт-ню",
@@ -296,6 +397,8 @@ export const translations = {
             "Вічна художня витонченість через класичну форму та сучасний погляд.",
           category: "Арт-ню",
           tags: ["Арт-ню", "Студія", "Класика"],
+          year: "2023",
+          location: "Студія",
         },
       },
     },
@@ -360,6 +463,8 @@ export const translations = {
       sliderAria: "Гортайте мерч",
       subtitle: "Невеликі дропи, натхненні візуальним світом Katrina",
       order: "Замовити в Telegram",
+      modalBackdropClose: "Закрити товар",
+      availability: "Лімітовані дропи — уточнюйте наявність у Telegram.",
       items: {
         "1": {
           name: "Авторський принт",

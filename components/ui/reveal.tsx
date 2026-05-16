@@ -17,6 +17,7 @@ type RevealAnimation =
   | "stagger"
   | "scale"
   | "text-soft"
+  | "editorial-rise"
   | "image-clip"
   | "line-reveal"
 
@@ -27,10 +28,10 @@ const variantDefaults: Record<
   RevealVariant,
   { animation: RevealAnimation; duration: number }
 > = {
-  text: { animation: "text-soft", duration: 1100 },
-  image: { animation: "image-clip", duration: 1300 },
-  line: { animation: "line-reveal", duration: 1000 },
-  stagger: { animation: "fade-up", duration: 1050 },
+  text: { animation: "editorial-rise", duration: 1320 },
+  image: { animation: "image-clip", duration: 1320 },
+  line: { animation: "line-reveal", duration: 1100 },
+  stagger: { animation: "editorial-rise", duration: 1180 },
 }
 
 interface RevealProps {
@@ -43,7 +44,7 @@ interface RevealProps {
   duration?: number
 }
 
-const ease = "cubic-bezier(0.16, 1, 0.3, 1)"
+const ease = "cubic-bezier(0.22, 1, 0.32, 1)"
 
 function subscribeReducedMotion(onChange: () => void) {
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -89,20 +90,67 @@ export function Reveal({
   useEffect(() => {
     if (prefersReducedMotion) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true)
-          observer.disconnect()
+    let observer: IntersectionObserver | null = null
+    let raf = 0
+    let finished = false
+
+    const shouldRevealNow = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const margin = vh * 0.12
+      return rect.bottom > -margin && rect.top < vh + margin
+    }
+
+    const cleanupListeners = () => {
+      window.removeEventListener("scroll", onScrollOrResize)
+      window.removeEventListener("resize", onScrollOrResize)
+    }
+
+    const finish = () => {
+      if (finished) return
+      finished = true
+      setRevealed(true)
+      cleanupListeners()
+      observer?.disconnect()
+    }
+
+    function onScrollOrResize() {
+      const node = ref.current
+      if (!node || finished) return
+      if (shouldRevealNow(node)) finish()
+    }
+
+    const connectObserver = () => {
+      observer?.disconnect()
+      const next = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting || entry.intersectionRatio > 0) finish()
+        },
+        {
+          threshold: 0,
+          rootMargin: "0px 0px 20% 0px",
         }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -72px 0px" }
-    )
+      )
+      observer = next
+      const node = ref.current
+      if (node) next.observe(node)
+    }
 
-    const node = ref.current
-    if (node) observer.observe(node)
+    connectObserver()
 
-    return () => observer.disconnect()
+    window.addEventListener("scroll", onScrollOrResize, { passive: true })
+    window.addEventListener("resize", onScrollOrResize, { passive: true })
+
+    raf = requestAnimationFrame(() => {
+      requestAnimationFrame(onScrollOrResize)
+    })
+
+    return () => {
+      finished = true
+      cancelAnimationFrame(raf)
+      cleanupListeners()
+      observer?.disconnect()
+    }
   }, [prefersReducedMotion])
 
   const animationClasses: Record<RevealAnimation, string> = {
@@ -120,6 +168,9 @@ export function Reveal({
     "text-soft": visible
       ? "opacity-100 translate-y-0"
       : "opacity-0 translate-y-7",
+    "editorial-rise": visible
+      ? "opacity-100 translate-y-0 [clip-path:inset(-6%_-4%_-8%_-4%)]"
+      : "opacity-0 translate-y-[1.15rem] [clip-path:inset(88%_0_0_0)]",
     "image-clip": visible
       ? "opacity-100 scale-100 [clip-path:inset(0_0_0_0)]"
       : "opacity-0 scale-[1.045] [clip-path:inset(10%_7%_12%_7%)]",

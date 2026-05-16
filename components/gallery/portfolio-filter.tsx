@@ -21,22 +21,22 @@ export function PortfolioFilter({
           key={category}
           type="button"
           onClick={() => onCategoryChange(category)}
-          className="group relative min-h-10 px-1.5 py-2 md:min-h-11 md:px-2 md:py-2.5"
+          className="group relative min-h-11 touch-manipulation px-2 py-2.5 md:min-h-11 md:px-2.5 md:py-2.5"
         >
           <span
             className={cn(
-              "text-[10px] md:text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
+              "text-[10px] md:text-[11px] uppercase tracking-[0.2em] transition-[color,transform] duration-300 active:scale-[0.97]",
               activeCategory === category
                 ? "text-foreground"
-                : "text-foreground/40 group-hover:text-foreground/70"
+                : "text-foreground/40 [@media(hover:hover)]:group-hover:text-foreground/72"
             )}
           >
             {category}
           </span>
           <span
             className={cn(
-              "absolute bottom-1 left-0 right-0 h-px origin-left bg-foreground transition-transform duration-300",
-              activeCategory === category ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100 group-hover:bg-foreground/40"
+              "absolute bottom-1 left-0 right-0 h-px origin-left bg-foreground transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.32,1)]",
+              activeCategory === category ? "scale-x-100" : "scale-x-0 [@media(hover:hover)]:group-hover:scale-x-100 [@media(hover:hover)]:group-hover:bg-foreground/40"
             )}
           />
           {index > 0 && (

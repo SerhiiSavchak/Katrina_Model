@@ -60,14 +60,15 @@
 
 html {
   scroll-behavior: smooth;
+  /* Явно задаём ось Y, иначе при overflow-x: clip спецификация превращает visible в auto и ломает длинную страницу */
   overflow-x: clip;
+  overflow-y: scroll;
 }
 
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
-  overflow-x: clip;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -80,7 +81,13 @@ select,
   -webkit-user-select: text;
 }
 
-/* Display Typography - Modern Grotesk */
+/* Десктоп с мышью: кнопки — явный pointer (как у ссылок) */
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
 .display-xl {
   font-family: var(--font-display);
   font-weight: 700;
@@ -157,7 +164,7 @@ select,
 @keyframes stagger-in {
   from {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(115%);
   }
   to {
     opacity: 1;
@@ -201,11 +208,25 @@ select,
 @keyframes hero-rise-soft {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/** Появление типографики hero после лоадера: лёгкий blur + подъём */
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.35rem) scale(0.985);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
@@ -215,6 +236,18 @@ select,
 
 .animate-hero-rise-soft {
   animation: hero-rise-soft 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-hero-copy-in {
+  animation: hero-copy-in 1.12s cubic-bezier(0.2, 1, 0.32, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-copy-in {
+    animation: none;
+    will-change: auto;
+  }
 }
 
 .animate-reveal-up {
@@ -240,6 +273,51 @@ select,
 .animate-line-grow {
   animation: line-grow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   transform-origin: left;
+}
+
+@keyframes hero-scroll-line {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes hero-scroll-chevron {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(5px) rotate(45deg);
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-scroll-line-motion {
+    animation: hero-scroll-line 2.5s ease-in-out infinite;
+  }
+
+  .hero-scroll-chevron-motion {
+    animation: hero-scroll-chevron 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes editorial-modal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 .animation-delay-100 { animation-delay: 100ms; }
