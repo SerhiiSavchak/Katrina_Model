@@ -1,54 +1,58 @@
 "use client"
 
 import { Reveal } from "@/components/ui/reveal"
+import { ScrollParallax } from "@/components/ui/scroll-parallax"
+import { introSectionImage } from "@/data/remote-images"
 import Image from "next/image"
+import { useLocale } from "@/components/providers/app-providers"
 
 export function IntroSection() {
+  const { t } = useLocale()
+
   return (
-    <section className="py-28 md:py-36 lg:py-44 bg-background">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* Left: Statement */}
+    <section className="section-ambient-in relative bg-background py-24 md:py-32 lg:py-40">
+      <div className="mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
-            <Reveal>
-              <p className="label-sm text-foreground/35 mb-6">02 / Intro</p>
+            <Reveal variant="text">
+              <p className="label-sm mb-6 text-foreground/35">{t.intro.label}</p>
             </Reveal>
-            
-            <Reveal delay={100}>
-              <h2 className="display-md text-[clamp(1.75rem,4vw,3rem)] text-foreground leading-[1.15] mb-8">
-                Soft presence. Sharp silhouette. Cinematic body language.
+
+            <Reveal variant="text" delay={100}>
+              <h2 className="display-md mb-3 max-w-full text-pretty text-[clamp(1.5rem,4.2vw,2.85rem)] leading-[1.14] tracking-tight text-foreground md:leading-[1.1]">
+                <span className="block">{t.intro.headlineLine1}</span>
+                <span className="mt-2 block text-foreground/78">{t.intro.headlineLine2}</span>
               </h2>
             </Reveal>
 
-            <Reveal delay={150}>
-              <div className="line-h w-16 mb-8" />
+            <Reveal variant="line" delay={150}>
+              <div className="line-h my-8 w-14" />
             </Reveal>
 
-            <Reveal delay={200}>
-              <p className="text-foreground/55 text-base md:text-lg leading-relaxed max-w-xl">
-                Katrina Dragonfly is an international model working across fashion, 
-                studio, beauty and art nude photography — available for selected 
-                creative and commercial projects across Ukraine and Europe.
+            <Reveal variant="text" delay={200}>
+              <p className="max-w-md text-base leading-relaxed text-foreground/55 md:max-w-xl md:text-lg">
+                {t.intro.body}
               </p>
             </Reveal>
           </div>
 
-          {/* Right: Image */}
           <div className="lg:col-span-5">
-            <Reveal delay={250}>
-              <div className="relative aspect-[3/4] overflow-hidden">
+            <Reveal variant="image" delay={220}>
+              <ScrollParallax
+                intensity={10}
+                className="group relative aspect-[3/4] bg-muted shadow-[0_24px_80px_-32px_rgba(0,0,0,0.18)]"
+              >
                 <Image
-                  src="/images/portfolio/portfolio-03.jpg"
-                  alt="Katrina Dragonfly - Studio Portrait"
+                  src={introSectionImage}
+                  alt="Katrina Dragonfly — editorial portrait"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-[1.25s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  style={{ objectPosition: "48% 22%" }}
                   sizes="(max-width: 1024px) 100vw, 40vw"
                 />
-              </div>
-              <p className="label-xs text-foreground/30 mt-4">
-                Studio Portrait, 2024
-              </p>
+                <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/[0.05]" />
+              </ScrollParallax>
+              <p className="label-xs mt-4 text-foreground/30">{t.intro.caption}</p>
             </Reveal>
           </div>
         </div>

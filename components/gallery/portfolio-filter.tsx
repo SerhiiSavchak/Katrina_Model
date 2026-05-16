@@ -15,12 +15,13 @@ export function PortfolioFilter({
   onCategoryChange,
 }: PortfolioFilterProps) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-5 px-1 md:gap-x-8 md:gap-y-6">
       {categories.map((category, index) => (
         <button
           key={category}
+          type="button"
           onClick={() => onCategoryChange(category)}
-          className="group relative"
+          className="group relative min-h-10 px-1.5 py-2 md:min-h-11 md:px-2 md:py-2.5"
         >
           <span
             className={cn(
@@ -32,18 +33,14 @@ export function PortfolioFilter({
           >
             {category}
           </span>
-          {/* Animated underline */}
           <span
             className={cn(
-              "absolute -bottom-1 left-0 h-px bg-foreground transition-all duration-300",
-              activeCategory === category
-                ? "w-full"
-                : "w-0 group-hover:w-full group-hover:bg-foreground/40"
+              "absolute bottom-1 left-0 right-0 h-px origin-left bg-foreground transition-transform duration-300",
+              activeCategory === category ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100 group-hover:bg-foreground/40"
             )}
           />
-          {/* Optional: Category number */}
           {index > 0 && (
-            <span className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 text-[8px] text-foreground/20">
+            <span className="absolute -left-3 top-1/2 -translate-y-1/2 text-[8px] text-foreground/20 md:-left-5">
               ·
             </span>
           )}

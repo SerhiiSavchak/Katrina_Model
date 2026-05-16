@@ -1,31 +1,38 @@
+import { storiesRemoteImages } from "@/data/remote-images"
+
 export interface Story {
   id: string
   title: string
   description: string
   category: string
   image: string
+  objectPosition: string
 }
 
 export const stories: Story[] = [
   {
     id: "1",
     title: "Soft Studio Session",
-    description: "An intimate exploration of light and form in controlled studio environment.",
+    description:
+      "A refined study of light and form in a controlled studio environment.",
     category: "Studio",
-    image: "/images/stories/story-01.jpg",
+    image: storiesRemoteImages["1"].src,
+    objectPosition: storiesRemoteImages["1"].objectPosition,
   },
   {
     id: "2",
     title: "Berlin Editorial Mood",
     description: "Urban elegance captured in the streets and spaces of Berlin.",
     category: "Editorial",
-    image: "/images/stories/story-02.jpg",
+    image: storiesRemoteImages["2"].src,
+    objectPosition: storiesRemoteImages["2"].objectPosition,
   },
   {
     id: "3",
     title: "Art Nude Series",
     description: "Timeless artistic expression through classical form and modern vision.",
     category: "Art Nude",
-    image: "/images/stories/story-03.jpg",
+    image: storiesRemoteImages["3"].src,
+    objectPosition: storiesRemoteImages["3"].objectPosition,
   },
 ]

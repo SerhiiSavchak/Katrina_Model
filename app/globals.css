@@ -68,6 +68,16 @@ body {
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
   overflow-x: clip;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 /* Display Typography - Modern Grotesk */
@@ -160,6 +170,53 @@ body {
   to { transform: scaleX(1); }
 }
 
+@keyframes loader-wordmark-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loader-wordmark-in {
+  animation: loader-wordmark-in 0.9s ease-out forwards;
+}
+
+@keyframes hero-media-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+    clip-path: inset(8% 6% 10% 6%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hero-rise-soft {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-media-in {
+  animation: hero-media-in 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-hero-rise-soft {
+  animation: hero-rise-soft 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 .animate-reveal-up {
   animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -203,6 +260,49 @@ body {
 .line-v {
   width: 1px;
   background: hsl(var(--foreground) / 0.12);
+}
+
+/* Editorial utility classes (contact / footer) */
+.editorial-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.editorial-italic {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 350;
+  letter-spacing: -0.01em;
+}
+
+/* Soft boundary between major sections (premium rhythm) */
+.section-ambient-in {
+  position: relative;
+}
+
+.section-ambient-in::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4.5rem;
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--foreground) / 0.045),
+    transparent
+  );
+  opacity: 0.55;
+}
+
+.bg-dark.section-ambient-in::before {
+  background: linear-gradient(
+    to bottom,
+    hsl(40 12% 100% / 0.06),
+    transparent
+  );
 }
 
 /* Selection */

@@ -1,74 +1,97 @@
 "use client"
 
 import { Reveal } from "@/components/ui/reveal"
+import { ScrollParallax } from "@/components/ui/scroll-parallax"
+import { aboutSectionImage } from "@/data/remote-images"
 import Image from "next/image"
-
-const details = [
-  { label: "Location", value: "Ukraine / Europe" },
-  { label: "Availability", value: "Selected Bookings" },
-  { label: "Direction", value: "Fashion · Beauty · Studio · Art Nude" },
-  { label: "Collaboration", value: "Photographers, Studios, Brands" },
-]
+import { useLocale } from "@/components/providers/app-providers"
 
 export function AboutSection() {
+  const { t } = useLocale()
+
+  const details = [
+    t.about.details.location,
+    t.about.details.availability,
+    t.about.details.direction,
+    t.about.details.collaboration,
+  ]
+
   return (
-    <section id="about" className="py-28 md:py-36 lg:py-44 bg-dark text-dark-foreground">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          
-          {/* Image */}
-          <div className="lg:col-span-5">
-            <Reveal>
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="/images/portfolio/portfolio-01.jpg"
-                  alt="Katrina Dragonfly Portrait"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
+    <section
+      id="about"
+      className="section-ambient-in relative overflow-hidden bg-dark py-24 text-dark-foreground md:py-32 lg:py-40"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 80% 50% at 20% 0%, hsl(40 20% 96% / 0.35), transparent 55%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 lg:px-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-10">
+          <div className="lg:col-span-5 lg:sticky lg:top-28">
+            <Reveal variant="image">
+              <div className="relative">
+                <div className="absolute -left-4 top-10 hidden h-32 w-px bg-dark-foreground/15 lg:block" aria-hidden />
+                <ScrollParallax
+                  intensity={14}
+                  className="group relative aspect-[3/4] max-h-[min(78vh,52rem)] overflow-hidden bg-neutral-950/80 shadow-[0_40px_120px_-48px_rgba(0,0,0,0.65)]"
+                >
+                  <Image
+                    src={aboutSectionImage}
+                    alt="Katrina Dragonfly — editorial portrait"
+                    fill
+                    className="object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
+                    style={{ objectPosition: "50% 18%" }}
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    priority={false}
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20" />
+                  <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10" />
+                </ScrollParallax>
               </div>
             </Reveal>
           </div>
 
-          {/* Content */}
-          <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-center">
-            <Reveal>
-              <p className="label-sm text-dark-foreground/35 mb-6">05 / About</p>
+          <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:min-h-[min(78vh,52rem)] lg:pl-4">
+            <Reveal variant="text">
+              <p className="label-sm mb-5 text-dark-foreground/38">{t.about.label}</p>
             </Reveal>
-            
-            <Reveal delay={100}>
-              <h2 className="display-xl text-[clamp(2.5rem,8vw,4.5rem)] text-dark-foreground mb-8">
-                KATRINA
+
+            <Reveal variant="text" delay={80}>
+              <p className="label-xs mb-4 text-dark-foreground/45">{t.about.lede}</p>
+            </Reveal>
+
+            <Reveal variant="text" delay={120}>
+              <h2 className="display-xl mb-6 max-w-full text-pretty text-[clamp(1.85rem,5.5vw,3.75rem)] leading-[0.96] tracking-tight text-dark-foreground">
+                {t.about.title}
               </h2>
             </Reveal>
 
-            <Reveal delay={150}>
-              <div className="w-12 h-px bg-dark-foreground/20 mb-8" />
+            <Reveal variant="line" delay={160}>
+              <div className="mb-8 h-px w-16 bg-dark-foreground/22" />
             </Reveal>
 
-            <Reveal delay={200}>
-              <p className="text-lg md:text-xl text-dark-foreground/70 leading-relaxed mb-10">
-                Katrina Dragonfly is a model available for selected fashion, beauty, 
-                studio and art nude projects. Her work is built around expressive posing, 
-                soft cinematic presence and a refined visual language.
+            <Reveal variant="text" delay={200}>
+              <p className="mb-12 max-w-lg text-pretty text-lg leading-[1.65] text-dark-foreground/72 md:text-xl">
+                {t.about.body}
               </p>
             </Reveal>
 
-            {/* Details */}
-            <Reveal delay={250}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-dark-foreground/10 pt-8">
-                {details.map((detail) => (
-                  <div key={detail.label}>
-                    <span className="label-xs text-dark-foreground/30 block mb-2">
-                      {detail.label}
+            <Reveal variant="text" delay={260}>
+              <ul className="max-w-xl divide-y divide-dark-foreground/12 border-y border-dark-foreground/12">
+                {details.map((detail, i) => (
+                  <li key={detail.label} className="grid grid-cols-1 gap-2 py-6 sm:grid-cols-[8rem_1fr] sm:items-baseline sm:gap-8">
+                    <span className="label-xs text-dark-foreground/32">
+                      {String(i + 1).padStart(2, "0")} — {detail.label}
                     </span>
-                    <span className="text-dark-foreground/80 text-sm">
-                      {detail.value}
-                    </span>
-                  </div>
+                    <span className="text-[15px] leading-relaxed text-dark-foreground/84">{detail.value}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </Reveal>
           </div>
         </div>

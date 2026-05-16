@@ -3,6 +3,8 @@ import { Space_Grotesk, Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { AppProviders } from "@/components/providers/app-providers"
+import { SiteLoader } from "@/components/layout/site-loader"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -51,9 +53,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} bg-background`}>
       <body className="flex min-h-screen flex-col overflow-x-clip antialiased font-sans">
-        <Header />
-        <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
-        <Footer />
+        <AppProviders>
+          <SiteLoader />
+          <Header />
+          <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
+          <Footer />
+        </AppProviders>
       </body>
     </html>
   )

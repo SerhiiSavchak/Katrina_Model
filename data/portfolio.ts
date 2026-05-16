@@ -1,3 +1,5 @@
+import { portfolioRemoteImages } from "@/data/remote-images"
+
 export type PortfolioCategory = "All" | "Fashion" | "Studio" | "Beauty" | "Art Nude" | "Editorial"
 
 export interface PortfolioItem {
@@ -5,6 +7,8 @@ export interface PortfolioItem {
   title: string
   category: Exclude<PortfolioCategory, "All">
   image: string
+  /** CSS object-position, e.g. "50% 20%" */
+  objectPosition?: string
   aspectRatio: "portrait" | "landscape" | "square"
   year?: string
 }
@@ -14,7 +18,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "1",
     title: "Soft Studio Light",
     category: "Studio",
-    image: "/images/portfolio/portfolio-01.jpg",
+    image: portfolioRemoteImages["1"].src,
+    objectPosition: portfolioRemoteImages["1"].objectPosition,
     aspectRatio: "portrait",
     year: "2024",
   },
@@ -22,7 +27,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "2",
     title: "Berlin Editorial",
     category: "Editorial",
-    image: "/images/portfolio/portfolio-02.jpg",
+    image: portfolioRemoteImages["2"].src,
+    objectPosition: portfolioRemoteImages["2"].objectPosition,
     aspectRatio: "landscape",
     year: "2024",
   },
@@ -30,7 +36,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "3",
     title: "Beauty Portrait",
     category: "Beauty",
-    image: "/images/portfolio/portfolio-03.jpg",
+    image: portfolioRemoteImages["3"].src,
+    objectPosition: portfolioRemoteImages["3"].objectPosition,
     aspectRatio: "portrait",
     year: "2024",
   },
@@ -38,7 +45,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "4",
     title: "Body Study I",
     category: "Art Nude",
-    image: "/images/portfolio/portfolio-04.jpg",
+    image: portfolioRemoteImages["4"].src,
+    objectPosition: portfolioRemoteImages["4"].objectPosition,
     aspectRatio: "portrait",
     year: "2024",
   },
@@ -46,7 +54,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "5",
     title: "Fashion Test",
     category: "Fashion",
-    image: "/images/portfolio/portfolio-05.jpg",
+    image: portfolioRemoteImages["5"].src,
+    objectPosition: portfolioRemoteImages["5"].objectPosition,
     aspectRatio: "square",
     year: "2024",
   },
@@ -54,7 +63,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "6",
     title: "Morning Series",
     category: "Studio",
-    image: "/images/portfolio/portfolio-06.jpg",
+    image: portfolioRemoteImages["6"].src,
+    objectPosition: portfolioRemoteImages["6"].objectPosition,
     aspectRatio: "portrait",
     year: "2024",
   },
@@ -62,7 +72,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "7",
     title: "Studio Form",
     category: "Art Nude",
-    image: "/images/portfolio/portfolio-01.jpg",
+    image: portfolioRemoteImages["7"].src,
+    objectPosition: portfolioRemoteImages["7"].objectPosition,
     aspectRatio: "portrait",
     year: "2023",
   },
@@ -70,7 +81,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "8",
     title: "Kyiv Fashion Week",
     category: "Fashion",
-    image: "/images/portfolio/portfolio-02.jpg",
+    image: portfolioRemoteImages["8"].src,
+    objectPosition: portfolioRemoteImages["8"].objectPosition,
     aspectRatio: "landscape",
     year: "2023",
   },
@@ -78,7 +90,8 @@ export const portfolioItems: PortfolioItem[] = [
     id: "9",
     title: "Editorial Figure",
     category: "Art Nude",
-    image: "/images/portfolio/portfolio-03.jpg",
+    image: portfolioRemoteImages["9"].src,
+    objectPosition: portfolioRemoteImages["9"].objectPosition,
     aspectRatio: "portrait",
     year: "2023",
   },
