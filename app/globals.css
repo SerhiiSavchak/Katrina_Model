@@ -1,0 +1,415 @@
+@import "tailwindcss";
+
+:root {
+  /* Premium Minimal Palette */
+  --background: 40 10% 96%;        /* Off-white / Ivory */
+  --foreground: 0 0% 8%;           /* Near black */
+  
+  --card: 40 8% 94%;               /* Subtle warm gray */
+  --card-foreground: 0 0% 8%;
+  
+  --primary: 0 0% 8%;              /* Black */
+  --primary-foreground: 40 10% 96%;
+  
+  --secondary: 40 6% 90%;          /* Light stone */
+  --secondary-foreground: 0 0% 12%;
+  
+  --muted: 40 5% 85%;              /* Muted stone */
+  --muted-foreground: 0 0% 40%;
+  
+  --accent: 35 6% 70%;             /* Taupe */
+  --accent-foreground: 0 0% 8%;
+  
+  --dark: 0 0% 6%;                 /* Deep graphite */
+  --dark-foreground: 40 10% 96%;
+  
+  --border: 40 5% 88%;
+  --input: 40 5% 88%;
+  --ring: 0 0% 8%;
+  
+  --radius: 0rem;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-dark: hsl(var(--dark));
+  --color-dark-foreground: hsl(var(--dark-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius: var(--radius);
+  
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Явно задаём ось Y, иначе при overflow-x: clip спецификация превращает visible в auto и ломает длинную страницу */
+  overflow-x: clip;
+  overflow-y: scroll;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Десктоп с мышью: кнопки — явный pointer (как у ссылок) */
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.display-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* Label/Meta Typography */
+.label-sm {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.label-xs {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Reveal Animations */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-clip {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes reveal-clip-left {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(115%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes loader-wordmark-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loader-wordmark-in {
+  animation: loader-wordmark-in 0.9s ease-out forwards;
+}
+
+@keyframes hero-media-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+    clip-path: inset(8% 6% 10% 6%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hero-rise-soft {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/** Появление типографики hero после лоадера: лёгкий blur + подъём */
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.35rem) scale(0.985);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.animate-hero-media-in {
+  animation: hero-media-in 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-hero-rise-soft {
+  animation: hero-rise-soft 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-hero-copy-in {
+  animation: hero-copy-in 1.12s cubic-bezier(0.2, 1, 0.32, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-copy-in {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+.animate-reveal-up {
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-reveal-clip {
+  animation: reveal-clip 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-reveal-clip-left {
+  animation: reveal-clip-left 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-stagger {
+  animation: stagger-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-line-grow {
+  animation: line-grow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: left;
+}
+
+@keyframes hero-scroll-line {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes hero-scroll-chevron {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(5px) rotate(45deg);
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-scroll-line-motion {
+    animation: hero-scroll-line 2.5s ease-in-out infinite;
+  }
+
+  .hero-scroll-chevron-motion {
+    animation: hero-scroll-chevron 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes editorial-modal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+.animation-delay-600 { animation-delay: 600ms; }
+.animation-delay-700 { animation-delay: 700ms; }
+.animation-delay-800 { animation-delay: 800ms; }
+
+/* Line Elements */
+.line-h {
+  height: 1px;
+  background: hsl(var(--foreground) / 0.12);
+}
+
+.line-v {
+  width: 1px;
+  background: hsl(var(--foreground) / 0.12);
+}
+
+/* Editorial utility classes (contact / footer) */
+.editorial-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.editorial-italic {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 350;
+  letter-spacing: -0.01em;
+}
+
+/* Soft boundary between major sections (premium rhythm) */
+.section-ambient-in {
+  position: relative;
+}
+
+.section-ambient-in::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4.5rem;
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--foreground) / 0.045),
+    transparent
+  );
+  opacity: 0.55;
+}
+
+.bg-dark.section-ambient-in::before {
+  background: linear-gradient(
+    to bottom,
+    hsl(40 12% 100% / 0.06),
+    transparent
+  );
+}
+
+/* Selection */
+::selection {
+  background: hsl(0 0% 8% / 0.12);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground) / 0.25);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
