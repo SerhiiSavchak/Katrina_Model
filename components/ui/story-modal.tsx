@@ -1,39 +1,27 @@
-"use client";
+"use client"
 
-import { EditorialModal } from "@/components/ui/editorial-modal";
+import Image from "next/image"
+import { useEffect, useId, useRef, useState } from "react"
+import { EditorialModal } from "@/components/ui/editorial-modal"
+import type { Story } from "@/data/stories"
+import type { TranslationTree } from "@/data/translations"
+import { cn } from "@/lib/cn"
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 
-import { cn } from "@/lib/cn";
-
-import type { Story } from "@/data/stories";
-
-import type { TranslationTree } from "@/data/translations";
-
-import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
-
-import Image from "next/image";
-
-import { useEffect, useId, useRef, useState } from "react";
-
-const FALLBACK = "/images/stories/story-01.jpg";
+const FALLBACK = "/images/stories/story-01.jpg"
 
 function StorySlideImage({
   src,
-
   pos,
-
   title,
-
   index,
 }: {
-  src: string;
-
-  pos: string;
-
-  title: string;
-
-  index: number;
+  src: string
+  pos: string
+  title: string
+  index: number
 }) {
-  const [useFallback, setUseFallback] = useState(false);
+  const [useFallback, setUseFallback] = useState(false)
 
   return (
     <Image
@@ -47,41 +35,32 @@ function StorySlideImage({
       sizes="(max-width: 640px) 44vw, (max-width: 1024px) 24vw, 220px"
       onError={() => setUseFallback(true)}
     />
-  );
+  )
 }
 
 type StoryModalProps = {
-  story: Story | null;
-
-  t: TranslationTree;
-
-  onClose: () => void;
-};
+  story: Story | null
+  t: TranslationTree
+  onClose: () => void
+}
 
 export function StoryModal({ story, t, onClose }: StoryModalProps) {
-  const titleId = useId();
-
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId()
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (!story) return;
+    if (!story) return
+    queueMicrotask(() => closeRef.current?.focus())
+  }, [story])
 
-    queueMicrotask(() => closeRef.current?.focus());
-  }, [story]);
+  if (!story) return null
 
-  if (!story) return null;
-
-  const copy = t.stories.items[story.id as keyof typeof t.stories.items];
-
-  const title = copy?.title ?? story.title;
-
-  const description = copy?.description ?? story.description;
-
-  const category = copy?.category ?? story.category;
-
-  const tags = copy?.tags ?? [category];
-
-  const meta = [copy?.year, copy?.location].filter(Boolean).join(" · ");
+  const copy = t.stories.items[story.id as keyof typeof t.stories.items]
+  const title = copy?.title ?? story.title
+  const description = copy?.description ?? story.description
+  const category = copy?.category ?? story.category
+  const tags = copy?.tags ?? [category]
+  const meta = [copy?.year, copy?.location].filter(Boolean).join(" · ")
 
   return (
     <EditorialModal
@@ -98,8 +77,7 @@ export function StoryModal({ story, t, onClose }: StoryModalProps) {
           onClick={onClose}
           className={cn(
             "group/close absolute right-3 top-3 z-20 rounded-sm px-3 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-foreground/55 transition-[color,transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.32,1)] hover:text-foreground motion-safe:hover:-translate-y-px active:scale-[0.98] sm:right-5 sm:top-4",
-
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           )}
         >
           <span className="absolute -inset-0.5" aria-hidden />
@@ -120,9 +98,7 @@ export function StoryModal({ story, t, onClose }: StoryModalProps) {
               </h2>
 
               {meta ? (
-                <p className="label-xs mt-2 text-foreground/32 tabular-nums sm:mt-2">
-                  {meta}
-                </p>
+                <p className="label-xs mt-2 text-foreground/32 tabular-nums sm:mt-2">{meta}</p>
               ) : null}
 
               <p className="mt-4 max-w-prose text-pretty text-sm leading-relaxed text-foreground/52 sm:mt-3 sm:text-[0.875rem] sm:leading-relaxed">
@@ -138,20 +114,14 @@ export function StoryModal({ story, t, onClose }: StoryModalProps) {
               <div className="grid w-full grid-cols-2 gap-2 sm:max-h-[min(65vh,26rem)] sm:overflow-hidden">
                 {story.images.map((src, index) => {
                   const pos = story.objectPositions[index] ?? "50% 28%"
-
                   return (
                     <div
                       key={`${story.id}-${index}`}
                       className="relative aspect-[4/5] min-h-0 w-full overflow-hidden bg-muted"
                     >
-                      <StorySlideImage
-                        src={src}
-                        pos={pos}
-                        title={title}
-                        index={index}
-                      />
+                      <StorySlideImage src={src} pos={pos} title={title} index={index} />
                     </div>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -174,5 +144,5 @@ export function StoryModal({ story, t, onClose }: StoryModalProps) {
         </div>
       </div>
     </EditorialModal>
-  );
+  )
 }

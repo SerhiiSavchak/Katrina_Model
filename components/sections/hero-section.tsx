@@ -24,6 +24,7 @@ export function HeroSection() {
   const [scrollHintVisible, setScrollHintVisible] = useState(true)
   /** Пока false — размытие на самом видео (первый кадр ролика), не отдельная фотка */
   const [videoSharp, setVideoSharp] = useState(false)
+  const showVideoSharp = reducedMotion || videoSharp
 
   useEffect(() => {
     const v = videoRef.current
@@ -31,10 +32,6 @@ export function HeroSection() {
     v.setAttribute("fetchpriority", "high")
     void v.play().catch(() => {})
   }, [])
-
-  useEffect(() => {
-    if (reducedMotion) setVideoSharp(true)
-  }, [reducedMotion])
 
   useEffect(() => {
     const v = videoRef.current
@@ -133,9 +130,9 @@ export function HeroSection() {
           ref={videoRef}
           className={cn(
             "absolute left-0 top-0 z-0 h-full min-h-[100svh] w-full object-cover object-[32%_27%] sm:object-[34%_27%] md:object-[38%_28%] lg:w-[132%] lg:max-w-none lg:object-[76%_30%] xl:w-[142%] xl:object-[80%_30%]",
-            !videoSharp &&
+            !showVideoSharp &&
               "blur-2xl brightness-[0.88] contrast-[1.04] saturate-[0.95] motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
-            videoSharp &&
+            showVideoSharp &&
               "blur-0 brightness-100 contrast-100 saturate-100 motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
             mediaMotion && "animate-hero-media-in",
             !mediaMotion && !reducedMotion && "opacity-0",

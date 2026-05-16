@@ -110,25 +110,14 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
 
   useLayoutEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (!mq.matches) return
-    const id = window.setTimeout(() => {
+    const syncReducedMotion = () => {
+      if (!mq.matches) return
       setReducedMotion(true)
       setPhase("ready")
-    }, 0)
-    return () => window.clearTimeout(id)
-  }, [])
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const update = () => {
-      if (!mq.matches) return
-      window.setTimeout(() => {
-        setReducedMotion(true)
-        setPhase("ready")
-      }, 0)
     }
-    mq.addEventListener("change", update)
-    return () => mq.removeEventListener("change", update)
+    syncReducedMotion()
+    mq.addEventListener("change", syncReducedMotion)
+    return () => mq.removeEventListener("change", syncReducedMotion)
   }, [])
 
   useEffect(() => {

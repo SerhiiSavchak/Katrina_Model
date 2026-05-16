@@ -1,12 +1,32 @@
+import dynamic from "next/dynamic"
 import { HeroSection } from "@/components/sections/hero-section"
-import { IntroSection } from "@/components/sections/intro-section"
-import { PortfolioSection } from "@/components/sections/portfolio-section"
-import { VisualStoriesSection } from "@/components/sections/visual-stories-section"
-import { AboutSection } from "@/components/sections/about-section"
-import { ModelInfoSection } from "@/components/sections/model-info-section"
-import { BookingSection } from "@/components/sections/booking-section"
-import { MerchSection } from "@/components/sections/merch-section"
-import { ContactSection } from "@/components/sections/contact-section"
+
+const IntroSection = dynamic(() =>
+  import("@/components/sections/intro-section").then((m) => ({ default: m.IntroSection }))
+)
+const PortfolioSection = dynamic(() =>
+  import("@/components/sections/portfolio-section").then((m) => ({ default: m.PortfolioSection }))
+)
+const VisualStoriesSection = dynamic(() =>
+  import("@/components/sections/visual-stories-section").then((m) => ({
+    default: m.VisualStoriesSection,
+  }))
+)
+const AboutSection = dynamic(() =>
+  import("@/components/sections/about-section").then((m) => ({ default: m.AboutSection }))
+)
+const ModelInfoSection = dynamic(() =>
+  import("@/components/sections/model-info-section").then((m) => ({ default: m.ModelInfoSection }))
+)
+const BookingSection = dynamic(() =>
+  import("@/components/sections/booking-section").then((m) => ({ default: m.BookingSection }))
+)
+const MerchSection = dynamic(() =>
+  import("@/components/sections/merch-section").then((m) => ({ default: m.MerchSection }))
+)
+const ContactSection = dynamic(() =>
+  import("@/components/sections/contact-section").then((m) => ({ default: m.ContactSection }))
+)
 
 export default function Home() {
   return (

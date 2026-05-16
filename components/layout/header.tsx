@@ -63,8 +63,8 @@ export function Header() {
 
   useEffect(() => {
     if (!mobileMenuMounted) {
-      setMobileMenuAnimOpen(false)
-      return
+      const id = requestAnimationFrame(() => setMobileMenuAnimOpen(false))
+      return () => cancelAnimationFrame(id)
     }
     clearMobileCloseTimer()
     const id = requestAnimationFrame(() => {

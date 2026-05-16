@@ -1,10 +1,17 @@
 import type { Metadata, Viewport } from "next"
-import { Space_Grotesk, Inter } from "next/font/google"
-import "./globals.css"
-import { Header } from "@/components/layout/header"
+import type { ReactNode } from "react"
+import { Inter, Space_Grotesk } from "next/font/google"
 import { Footer } from "@/components/layout/footer"
-import { AppProviders } from "@/components/providers/app-providers"
+import { Header } from "@/components/layout/header"
 import { SiteLoader } from "@/components/layout/site-loader"
+import { AppProviders } from "@/components/providers/app-providers"
+import {
+  getSiteMetadataBase,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_TITLE,
+} from "@/lib/site-meta"
+import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -18,23 +25,13 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Katrina Dragonfly — International Model",
-  description:
-    "International model portfolio of Katrina Dragonfly. Fashion, studio, beauty and art nude projects across Ukraine and Europe.",
-  keywords: [
-    "model",
-    "fashion model",
-    "beauty",
-    "editorial",
-    "studio photography",
-    "art nude",
-    "Ukraine",
-    "Europe",
-  ],
+  metadataBase: getSiteMetadataBase(),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
   openGraph: {
-    title: "Katrina Dragonfly — International Model",
-    description:
-      "International model portfolio of Katrina Dragonfly. Fashion, studio, beauty and art nude projects across Ukraine and Europe.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     type: "website",
   },
 }
@@ -48,7 +45,7 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} bg-background`}>

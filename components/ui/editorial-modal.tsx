@@ -63,7 +63,7 @@ export function EditorialModal({
         onClick={onClose}
       />
 
-        <div
+      <div
         className={cn(
           "relative z-10 m-3 flex min-h-0 w-full max-w-[min(96vw,52rem)] flex-col overflow-hidden border border-foreground/12 bg-background shadow-[0_32px_120px_-40px_rgba(0,0,0,0.45)] motion-safe:animate-[editorial-modal-in_0.58s_cubic-bezier(0.22,1,0.36,1)_both] sm:m-6",
           "max-h-[min(92dvh,52rem)] sm:max-h-[min(90dvh,44rem)]",

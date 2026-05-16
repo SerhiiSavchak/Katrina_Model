@@ -42,7 +42,6 @@ export function SiteLoader() {
         fading ? "pointer-events-none translate-y-[-6px] scale-[0.992] opacity-0" : "translate-y-0 scale-100 opacity-100"
       )}
       aria-hidden
-      aria-busy={!fading}
     >
       <div
         className={cn(
