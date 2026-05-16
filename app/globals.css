@@ -1,30 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Editorial Palette */
-  --background: 45 20% 97%;        /* Warm ivory/milk */
-  --foreground: 0 0% 8%;           /* Near black charcoal */
+  /* Premium Minimal Palette */
+  --background: 40 10% 96%;        /* Off-white / Ivory */
+  --foreground: 0 0% 8%;           /* Near black */
   
-  --card: 40 15% 95%;              /* Soft warm gray */
+  --card: 40 8% 94%;               /* Subtle warm gray */
   --card-foreground: 0 0% 8%;
   
-  --primary: 0 0% 8%;              /* Near black */
-  --primary-foreground: 45 20% 97%;
+  --primary: 0 0% 8%;              /* Black */
+  --primary-foreground: 40 10% 96%;
   
-  --secondary: 35 8% 92%;          /* Light champagne */
-  --secondary-foreground: 0 0% 15%;
+  --secondary: 40 6% 90%;          /* Light stone */
+  --secondary-foreground: 0 0% 12%;
   
-  --muted: 35 8% 88%;              /* Soft taupe */
-  --muted-foreground: 0 0% 45%;
+  --muted: 40 5% 85%;              /* Muted stone */
+  --muted-foreground: 0 0% 40%;
   
-  --accent: 38 25% 75%;            /* Gold champagne */
+  --accent: 35 6% 70%;             /* Taupe */
   --accent-foreground: 0 0% 8%;
   
-  --dark: 0 0% 6%;                 /* Editorial dark blocks */
-  --dark-foreground: 38 25% 75%;   /* Gold on dark */
+  --dark: 0 0% 6%;                 /* Deep graphite */
+  --dark-foreground: 40 10% 96%;
   
-  --border: 35 8% 90%;
-  --input: 35 8% 90%;
+  --border: 40 5% 88%;
+  --input: 40 5% 88%;
   --ring: 0 0% 8%;
   
   --radius: 0rem;
@@ -50,8 +50,8 @@
   --color-ring: hsl(var(--ring));
   --radius: var(--radius);
   
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-bodoni);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
 * {
@@ -65,35 +65,53 @@ html {
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans);
 }
 
-/* Editorial Typography Classes */
-.editorial-display {
-  font-family: var(--font-serif);
+/* Display Typography - Modern Grotesk */
+.display-xl {
+  font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.85;
-}
-
-.editorial-heading {
-  font-family: var(--font-serif);
-  font-weight: 500;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
-.editorial-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+.display-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  text-transform: uppercase;
 }
 
-/* Reveal animations */
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* Label/Meta Typography */
+.label-sm {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.label-xs {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Reveal Animations */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -103,7 +121,7 @@ body {
 
 @keyframes reveal-clip {
   from {
-    clip-path: inset(100% 0 0 0);
+    clip-path: inset(0 0 100% 0);
   }
   to {
     clip-path: inset(0 0 0 0);
@@ -120,12 +138,8 @@ body {
 }
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes stagger-in {
@@ -140,50 +154,33 @@ body {
 }
 
 @keyframes line-grow {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .animate-reveal-up {
-  animation: reveal-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-reveal-clip {
-  animation: reveal-clip 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: reveal-clip 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-reveal-clip-left {
-  animation: reveal-clip-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: reveal-clip-left 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
+  animation: fade-in 0.6s ease-out forwards;
 }
 
 .animate-stagger {
-  animation: stagger-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: stagger-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-line-grow {
-  animation: line-grow 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: line-grow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   transform-origin: left;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
 }
 
 .animation-delay-100 { animation-delay: 100ms; }
@@ -194,30 +191,26 @@ body {
 .animation-delay-600 { animation-delay: 600ms; }
 .animation-delay-700 { animation-delay: 700ms; }
 .animation-delay-800 { animation-delay: 800ms; }
-.animation-delay-900 { animation-delay: 900ms; }
-.animation-delay-1000 { animation-delay: 1000ms; }
-.animation-delay-1200 { animation-delay: 1200ms; }
-.animation-delay-1400 { animation-delay: 1400ms; }
+
+/* Line Elements */
+.line-h {
+  height: 1px;
+  background: hsl(var(--foreground) / 0.12);
+}
+
+.line-v {
+  width: 1px;
+  background: hsl(var(--foreground) / 0.12);
+}
 
 /* Selection */
 ::selection {
-  background: hsl(0 0% 8% / 0.15);
+  background: hsl(0 0% 8% / 0.12);
 }
 
-/* Thin editorial lines */
-.editorial-line {
-  height: 1px;
-  background: hsl(var(--foreground) / 0.15);
-}
-
-.editorial-line-vertical {
-  width: 1px;
-  background: hsl(var(--foreground) / 0.15);
-}
-
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -225,9 +218,18 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--foreground) / 0.2);
+  background: hsl(var(--foreground) / 0.15);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--foreground) / 0.3);
+  background: hsl(var(--foreground) / 0.25);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

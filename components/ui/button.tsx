@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn"
 import { type ButtonHTMLAttributes, forwardRef } from "react"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost"
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "dark"
   size?: "sm" | "md" | "lg"
 }
 
@@ -14,17 +14,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center text-[11px] uppercase tracking-[0.2em] transition-all duration-300 focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 disabled:pointer-events-none disabled:opacity-50",
+          "text-[11px] uppercase tracking-[0.12em]",
           {
             "bg-foreground text-background hover:bg-foreground/90": variant === "primary",
             "bg-card text-foreground hover:bg-muted": variant === "secondary",
             "border border-foreground/20 bg-transparent text-foreground hover:bg-foreground hover:text-background": variant === "outline",
             "bg-transparent text-foreground/60 hover:text-foreground": variant === "ghost",
+            "bg-dark-foreground text-dark hover:bg-dark-foreground/90": variant === "dark",
           },
           {
-            "px-4 py-2.5": size === "sm",
-            "px-6 py-3": size === "md",
-            "px-8 py-4": size === "lg",
+            "h-10 px-5": size === "sm",
+            "h-12 px-7": size === "md",
+            "h-14 px-9": size === "lg",
           },
           className
         )}

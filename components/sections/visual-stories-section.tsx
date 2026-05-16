@@ -7,45 +7,32 @@ import Link from "next/link"
 
 export function VisualStoriesSection() {
   return (
-    <section className="py-32 md:py-40 lg:py-52 bg-background relative">
-      {/* Section Number */}
-      <div className="absolute top-16 md:top-20 left-6 md:left-10 lg:left-16">
-        <Reveal>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/30">
-            04 / Stories
-          </span>
-        </Reveal>
-      </div>
-
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
+    <section className="py-28 md:py-36 lg:py-44 bg-background">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
         {/* Header */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-32">
-          <div className="col-span-12 lg:col-span-8">
-            <Reveal>
-              <div className="flex items-baseline gap-4 mb-4">
-                <span className="editorial-italic text-2xl md:text-3xl text-foreground/50">Selected</span>
-              </div>
-              <h2 className="editorial-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-foreground">
-                VISUAL STORIES
-              </h2>
-            </Reveal>
-          </div>
+        <div className="mb-16 md:mb-24">
+          <Reveal>
+            <p className="label-sm text-foreground/35 mb-6">04 / Stories</p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h2 className="display-xl text-[clamp(2.5rem,8vw,5rem)] text-foreground">
+              VISUAL STORIES
+            </h2>
+          </Reveal>
         </div>
 
-        {/* Editorial Story Blocks */}
-        <div className="space-y-24 md:space-y-32 lg:space-y-40">
+        {/* Story Blocks */}
+        <div className="space-y-20 md:space-y-28 lg:space-y-36">
           {stories.map((story, index) => (
-            <Reveal key={story.id} delay={index * 100}>
-              <article className={`grid grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center ${
-                index % 2 === 1 ? "direction-rtl" : ""
-              }`}>
+            <Reveal key={story.id} delay={index * 75}>
+              <article className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center`}>
                 {/* Image */}
-                <div className={`col-span-12 ${
+                <div className={`${
                   index % 2 === 0 
                     ? "lg:col-span-7" 
                     : "lg:col-span-7 lg:col-start-6 lg:order-2"
                 }`}>
-                  <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+                  <div className="relative aspect-[16/10] overflow-hidden group">
                     <Image
                       src={story.image}
                       alt={story.title}
@@ -57,45 +44,38 @@ export function VisualStoriesSection() {
                 </div>
 
                 {/* Content */}
-                <div className={`col-span-12 ${
+                <div className={`${
                   index % 2 === 0 
                     ? "lg:col-span-4 lg:col-start-9" 
                     : "lg:col-span-4 lg:col-start-1 lg:order-1"
                 }`}>
-                  <div className="py-6 lg:py-0">
-                    {/* Number */}
-                    <span className="text-[10px] font-mono text-foreground/30 block mb-4">
-                      {String(index + 1).padStart(2, "0")}
+                  <span className="label-xs text-foreground/30 block mb-4">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  
+                  <span className="label-xs text-foreground/40 block mb-3">
+                    {story.category}
+                  </span>
+                  
+                  <h3 className="display-md text-2xl md:text-3xl text-foreground mb-4">
+                    {story.title}
+                  </h3>
+                  
+                  <p className="text-foreground/50 text-sm leading-relaxed mb-6">
+                    {story.description}
+                  </p>
+                  
+                  <Link
+                    href="#"
+                    className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.1em] text-foreground group/link"
+                  >
+                    <span className="border-b border-foreground/25 group-hover/link:border-foreground transition-colors pb-0.5">
+                      View story
                     </span>
-                    
-                    {/* Category */}
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 block mb-3">
-                      {story.category}
+                    <span className="text-foreground/30 group-hover/link:translate-x-1 transition-transform">
+                      &rarr;
                     </span>
-                    
-                    {/* Title */}
-                    <h3 className="editorial-heading text-2xl md:text-3xl lg:text-4xl text-foreground mb-4">
-                      {story.title}
-                    </h3>
-                    
-                    {/* Description */}
-                    <p className="text-foreground/50 text-sm leading-relaxed mb-6">
-                      {story.description}
-                    </p>
-                    
-                    {/* Link */}
-                    <Link
-                      href="#"
-                      className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-foreground group/link"
-                    >
-                      <span className="border-b border-foreground/30 group-hover/link:border-foreground transition-colors pb-0.5">
-                        View story
-                      </span>
-                      <span className="text-foreground/30 group-hover/link:translate-x-1 transition-transform">
-                        &rarr;
-                      </span>
-                    </Link>
-                  </div>
+                  </Link>
                 </div>
               </article>
             </Reveal>

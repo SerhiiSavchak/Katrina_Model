@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next"
-import { Inter, Bodoni_Moda } from "next/font/google"
+import { Space_Grotesk, Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
 })
 
-const bodoni = Bodoni_Moda({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-bodoni",
+  variable: "--font-sans",
 })
 
 export const metadata: Metadata = {
@@ -39,7 +38,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#f7f6f4",
+  themeColor: "#f5f4f2",
   width: "device-width",
   initialScale: 1,
 }
@@ -50,8 +49,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${bodoni.variable} bg-background`}>
-      <body className="min-h-screen flex flex-col antialiased">
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} bg-background`}>
+      <body className="min-h-screen flex flex-col antialiased font-sans">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

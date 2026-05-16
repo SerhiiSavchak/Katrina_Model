@@ -15,42 +15,34 @@ export function PortfolioSection() {
       : portfolioItems.filter((item) => item.category === activeCategory)
 
   return (
-    <section id="portfolio" className="py-32 md:py-40 lg:py-52 bg-card relative">
-      {/* Section Number */}
-      <div className="absolute top-16 md:top-20 left-6 md:left-10 lg:left-16">
-        <Reveal>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/30">
-            03 / Portfolio
-          </span>
-        </Reveal>
-      </div>
-
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="portfolio" className="py-28 md:py-36 lg:py-44 bg-card">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
         {/* Header */}
-        <div className="grid grid-cols-12 gap-8 mb-16 md:mb-24">
-          <div className="col-span-12 lg:col-span-8">
-            <Reveal>
-              <h2 className="editorial-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-foreground mb-4">
-                PORTFOLIO
-              </h2>
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="text-foreground/50 text-sm md:text-base max-w-xl">
-                Selected work from fashion, studio, beauty and art nude photography
-              </p>
-            </Reveal>
-          </div>
+        <div className="mb-16 md:mb-20">
+          <Reveal>
+            <p className="label-sm text-foreground/35 mb-6">03 / Portfolio</p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h2 className="display-xl text-[clamp(2.5rem,8vw,5rem)] text-foreground mb-4">
+              PORTFOLIO
+            </h2>
+          </Reveal>
+          <Reveal delay={150}>
+            <p className="text-foreground/50 text-sm md:text-base max-w-lg">
+              Selected work from fashion, studio, beauty and art nude photography
+            </p>
+          </Reveal>
         </div>
 
         {/* Filter */}
-        <Reveal delay={150}>
-          <div className="flex flex-wrap gap-4 md:gap-8 mb-16 md:mb-20">
+        <Reveal delay={200}>
+          <div className="flex flex-wrap gap-6 md:gap-8 mb-12 md:mb-16 border-b border-foreground/8 pb-6">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={cn(
-                  "text-[11px] uppercase tracking-[0.2em] pb-2 transition-all duration-300 border-b",
+                  "text-[11px] uppercase tracking-[0.1em] pb-1 transition-all duration-300 border-b-2 -mb-[calc(1.5rem+1px)]",
                   activeCategory === category
                     ? "text-foreground border-foreground"
                     : "text-foreground/40 border-transparent hover:text-foreground/70"
@@ -62,28 +54,21 @@ export function PortfolioSection() {
           </div>
         </Reveal>
 
-        {/* Asymmetric Editorial Grid */}
-        <div className="grid grid-cols-12 gap-4 md:gap-6">
-          {filteredItems.map((item, index) => {
-            // Create asymmetric layout pattern
-            const layoutPatterns = [
-              "col-span-12 md:col-span-7 lg:col-span-6",    // Large left
-              "col-span-12 md:col-span-5 lg:col-span-6 md:mt-24",  // Medium right, offset
-              "col-span-12 md:col-span-5 lg:col-span-4",    // Small left
-              "col-span-12 md:col-span-7 lg:col-span-8",    // Large right
-              "col-span-12 md:col-span-6 lg:col-span-5 md:mt-16",  // Medium, offset
-              "col-span-12 md:col-span-6 lg:col-span-7",    // Large
-            ]
-            const pattern = layoutPatterns[index % layoutPatterns.length]
-
-            return (
-              <div key={item.id} className={pattern}>
-                <Reveal delay={index * 75}>
-                  <PortfolioCard item={item} index={index} />
-                </Reveal>
-              </div>
-            )
-          })}
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {filteredItems.map((item, index) => (
+            <div 
+              key={item.id} 
+              className={cn(
+                index % 5 === 0 && "md:col-span-2 lg:col-span-2",
+                index % 7 === 3 && "md:row-span-2"
+              )}
+            >
+              <Reveal delay={index * 50}>
+                <PortfolioCard item={item} index={index} />
+              </Reveal>
+            </div>
+          ))}
         </div>
       </div>
     </section>
