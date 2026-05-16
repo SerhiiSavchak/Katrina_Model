@@ -14,12 +14,22 @@ const navLinks = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [onHero, setOnHero] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      const y = window.scrollY
+      setIsScrolled(y > 50)
+      const hero = document.getElementById("top")
+      if (hero) {
+        const bottom = hero.getBoundingClientRect().bottom
+        setOnHero(bottom > 72)
+      } else {
+        setOnHero(y < window.innerHeight * 0.85)
+      }
     }
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -39,21 +49,33 @@ export function Header() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-          isScrolled
-            ? "bg-background/90 backdrop-blur-md"
-            : "bg-transparent"
+          onHero && !isScrolled
+            ? "bg-transparent"
+            : onHero && isScrolled
+              ? "bg-black/35 backdrop-blur-md"
+              : isScrolled
+                ? "bg-background/90 backdrop-blur-md"
+                : "bg-transparent"
         )}
       >
-        <div className={cn(
-          "absolute bottom-0 left-0 right-0 h-px bg-foreground/8 transition-opacity duration-500",
-          isScrolled ? "opacity-100" : "opacity-0"
-        )} />
+        <div
+          className={cn(
+            "absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500",
+            onHero ? "bg-white/15" : "bg-foreground/8",
+            isScrolled || !onHero ? "opacity-100" : "opacity-0"
+          )}
+        />
 
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
+        <div className="max-w-[1440px] mx-auto px-8 sm:px-10 lg:px-14">
           <nav className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link href="/" className="relative z-50">
-              <span className="text-[11px] md:text-[12px] uppercase tracking-[0.15em] text-foreground font-medium">
+              <span
+                className={cn(
+                  "text-[11px] font-medium uppercase tracking-[0.15em] md:text-[12px]",
+                  onHero ? "text-white" : "text-foreground"
+                )}
+              >
                 Katrina Dragonfly
               </span>
             </Link>
@@ -65,7 +87,12 @@ export function Header() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[11px] uppercase tracking-[0.1em] text-foreground/50 hover:text-foreground transition-colors duration-300"
+                      className={cn(
+                        "text-[11px] uppercase tracking-[0.1em] transition-colors duration-300",
+                        onHero
+                          ? "text-white/65 hover:text-white"
+                          : "text-foreground/50 hover:text-foreground"
+                      )}
                     >
                       {link.label}
                     </Link>
@@ -75,7 +102,12 @@ export function Header() {
 
               <Link
                 href="#contact"
-                className="text-[11px] uppercase tracking-[0.1em] text-foreground border border-foreground/15 px-5 h-10 flex items-center hover:bg-foreground hover:text-background transition-all duration-300"
+                className={cn(
+                  "flex h-10 items-center border px-5 text-[11px] uppercase tracking-[0.1em] transition-all duration-300",
+                  onHero
+                    ? "border-white/35 text-white hover:bg-white hover:text-neutral-950"
+                    : "border-foreground/15 text-foreground hover:bg-foreground hover:text-background"
+                )}
               >
                 Book
               </Link>
@@ -89,14 +121,16 @@ export function Header() {
             >
               <span
                 className={cn(
-                  "w-5 h-px bg-foreground transition-all duration-300",
-                  isMobileMenuOpen && "rotate-45 translate-y-[4px]"
+                  "h-px w-5 transition-all duration-300",
+                  onHero ? "bg-white" : "bg-foreground",
+                  isMobileMenuOpen && "translate-y-[4px] rotate-45"
                 )}
               />
               <span
                 className={cn(
-                  "w-5 h-px bg-foreground transition-all duration-300",
-                  isMobileMenuOpen && "-rotate-45 -translate-y-[4px]"
+                  "h-px w-5 transition-all duration-300",
+                  onHero ? "bg-white" : "bg-foreground",
+                  isMobileMenuOpen && "-translate-y-[4px] -rotate-45"
                 )}
               />
             </button>
