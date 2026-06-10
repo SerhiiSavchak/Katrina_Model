@@ -1,53 +1,28 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { siteContainerClass } from "@/components/layout/site-container"
 import { cn } from "@/lib/cn"
 import { useLocale, useSiteReveal } from "@/components/providers/app-providers"
 
-const VIDEO_MP4 = "/videos/hero-katrina.mp4"
-/** Локальный loop: editorial fashion (Mixkit «Fashion model… white background», free license) — замените на свой ролик при необходимости */
-const VIDEO_LOOP_LOCAL = "/videos/hero-loop.mp4"
-/** Запасной тот же стиль — Mixkit, если локальный файл удалён */
-const REMOTE_FALLBACK_MP4 =
-  "https://assets.mixkit.co/videos/43276/43276-720.mp4"
+const HERO_IMAGE = "/images/hero-katrina.jpg"
 
 const SCROLL_HINT_HIDE_PX = 96
-/** Если autoplay не дал `playing`, всё равно убираем blur с кадра видео */
-const VIDEO_SHARP_FALLBACK_MS = 2800
+const IMAGE_SHARP_FALLBACK_MS = 2800
 
 export function HeroSection() {
   const { t, locale } = useLocale()
   const { heroReveal, contentReveal, reducedMotion, notifyHeroReady } = useSiteReveal()
-  const videoRef = useRef<HTMLVideoElement>(null)
   const [scrollHintVisible, setScrollHintVisible] = useState(true)
-  /** Пока false — размытие на самом видео (первый кадр ролика), не отдельная фотка */
-  const [videoSharp, setVideoSharp] = useState(false)
-  const showVideoSharp = reducedMotion || videoSharp
+  const [imageSharp, setImageSharp] = useState(false)
+  const showImageSharp = reducedMotion || imageSharp
 
   useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-    v.setAttribute("fetchpriority", "high")
-    void v.play().catch(() => {})
-  }, [])
-
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-
-    const makeSharp = () => setVideoSharp(true)
-    v.addEventListener("playing", makeSharp)
-    v.addEventListener("error", makeSharp)
-
-    const fallback = window.setTimeout(makeSharp, VIDEO_SHARP_FALLBACK_MS)
-
-    return () => {
-      v.removeEventListener("playing", makeSharp)
-      v.removeEventListener("error", makeSharp)
-      window.clearTimeout(fallback)
-    }
+    const makeSharp = () => setImageSharp(true)
+    const fallback = window.setTimeout(makeSharp, IMAGE_SHARP_FALLBACK_MS)
+    return () => window.clearTimeout(fallback)
   }, [])
 
   useEffect(() => {
@@ -60,23 +35,19 @@ export function HeroSection() {
       notifyHeroReady()
     }
 
-    const v = videoRef.current
-    const onMediaReady = () => signal()
-
-    if (v) {
-      if (v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) onMediaReady()
-      v.addEventListener("loadeddata", onMediaReady)
-      v.addEventListener("canplay", onMediaReady)
-      v.addEventListener("error", onMediaReady)
+    const img = document.querySelector<HTMLImageElement>("#hero-background-image")
+    if (img?.complete && img.naturalWidth > 0) {
+      signal()
+      return
     }
+
+    img?.addEventListener("load", signal)
+    img?.addEventListener("error", signal)
 
     return () => {
       done = true
-      if (v) {
-        v.removeEventListener("loadeddata", onMediaReady)
-        v.removeEventListener("canplay", onMediaReady)
-        v.removeEventListener("error", onMediaReady)
-      }
+      img?.removeEventListener("load", signal)
+      img?.removeEventListener("error", signal)
     }
   }, [reducedMotion, notifyHeroReady])
 
@@ -114,7 +85,6 @@ export function HeroSection() {
       ? "text-[clamp(1.65rem,6.5vw,3.35rem)] sm:text-[clamp(2.1rem,7.5vw,4.1rem)] md:text-[clamp(2.45rem,5.2vw,5.25rem)] lg:text-[clamp(2.65rem,4.6vw,5.75rem)]"
       : "text-[clamp(1.95rem,7.5vw,4.75rem)] sm:text-[clamp(2.2rem,6.5vw,5.5rem)] md:text-[clamp(2.75rem,6.5vw,7rem)] lg:text-[clamp(3.1rem,6.5vw,8rem)]"
 
-  /** UA: каждая строка titleLines — одна линия (без переноса «Присутність»); ширина почти на весь контейнер */
   const titleMaxClass = locale === "ua" ? "max-w-full" : "max-w-[min(100%,46rem)]"
 
   const lineLeading = locale === "ua" ? "leading-[0.94]" : "leading-[0.95]"
@@ -126,29 +96,26 @@ export function HeroSection() {
       aria-label="Hero"
     >
       <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-950">
-        <video
-          ref={videoRef}
+        <Image
+          id="hero-background-image"
+          src={HERO_IMAGE}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
           className={cn(
-            "absolute left-0 top-0 z-0 h-full min-h-[100svh] w-full object-cover object-[32%_27%] sm:object-[34%_27%] md:object-[38%_28%] lg:w-[132%] lg:max-w-none lg:object-[76%_30%] xl:w-[142%] xl:object-[80%_30%]",
-            !showVideoSharp &&
+            "absolute left-0 top-0 z-0 h-full min-h-[100svh] w-full object-cover object-[68%_42%] sm:object-[70%_40%] md:object-[72%_38%] lg:object-[74%_36%]",
+            !showImageSharp &&
               "blur-2xl brightness-[0.88] contrast-[1.04] saturate-[0.95] motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showVideoSharp &&
+            showImageSharp &&
               "blur-0 brightness-100 contrast-100 saturate-100 motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
             mediaMotion && "animate-hero-media-in",
             !mediaMotion && !reducedMotion && "opacity-0",
             reducedMotion && heroReveal && "opacity-100"
           )}
-          autoPlay
-          muted
-          playsInline
-          loop
-          preload="auto"
-          aria-label="Hero background video"
-        >
-          <source src={VIDEO_MP4} type="video/mp4" />
-          <source src={VIDEO_LOOP_LOCAL} type="video/mp4" />
-          <source src={REMOTE_FALLBACK_MP4} type="video/mp4" />
-        </video>
+          onLoad={() => setImageSharp(true)}
+          onError={() => setImageSharp(true)}
+        />
       </div>
 
       <div
