@@ -10,7 +10,7 @@ export function unsplashEditorial(photoSlug: string, width = 1800) {
 export const introSectionImage = "/images/intro/intro-in-frame.png"
 
 /** About — editorial portrait, calm crop */
-export const aboutSectionImage = unsplashEditorial("photo-1529626455594-4ff0802cfb7e", 1600)
+export const aboutSectionImage = "/images/about/about-portrait.png"
 
 export const portfolioRemoteImages: Record<
   string,

@@ -49,7 +49,7 @@ export function AboutSection() {
                     placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
                     className="object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
-                    style={{ objectPosition: "50% 18%" }}
+                    style={{ objectPosition: "52% 22%" }}
                     sizes="(max-width: 1024px) 100vw, 42vw"
                     priority={false}
                   />

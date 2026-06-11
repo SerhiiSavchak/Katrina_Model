@@ -51,7 +51,7 @@ export function IntroSection() {
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
                   className="object-cover transition-transform duration-[1.25s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                  style={{ objectPosition: "50% 42%" }}
+                  style={{ objectPosition: "50% 32%" }}
                   sizes="(max-width: 1024px) 100vw, 40vw"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-700 group-hover:bg-foreground/[0.05]" />
