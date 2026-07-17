@@ -6,16 +6,13 @@ import type { PortfolioItem } from "@/data/portfolio"
 import type { TranslationTree } from "@/data/translations"
 import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 import Image from "next/image"
-import { useCallback, useEffect, useId, useRef, useState } from "react"
-
-const FALLBACK_IMAGE = "/images/portfolio/portfolio-01.jpg"
+import { useCallback, useEffect, useId, useRef } from "react"
 
 function PortfolioModalHeroImage({ item, title }: { item: PortfolioItem; title: string }) {
-  const [useFallback, setUseFallback] = useState(false)
   return (
     <Image
-      src={useFallback ? FALLBACK_IMAGE : item.image}
-      alt={title}
+      src={item.image}
+      alt={item.alt || title}
       fill
       placeholder="blur"
       blurDataURL={IMAGE_BLUR_DATA_URL}
@@ -23,7 +20,6 @@ function PortfolioModalHeroImage({ item, title }: { item: PortfolioItem; title: 
       style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
       sizes="(max-width: 640px) 96vw, 56rem"
       priority
-      onError={() => setUseFallback(true)}
     />
   )
 }

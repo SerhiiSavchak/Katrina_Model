@@ -100,8 +100,15 @@ export function useSiteReveal() {
   return ctx
 }
 
-const LOADER_MAX_WAIT_MS = 2000
+const LOADER_MIN_SHOW_MS = 600
+const LOADER_MAX_WAIT_MS = 1400
 const LOADER_FADE_MS = 520
+const LOADER_SESSION_KEY = "kd-loader-shown"
+
+// Module-level guard: React Strict Mode re-runs the layout effect in dev, and
+// the second run would read the sessionStorage key the first run just wrote,
+// instantly dismissing the loader (one-frame flicker). Decide once per page load.
+let loaderDecision: "show" | "skip" | null = null
 
 export function SiteRevealProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<SitePhase>("loading")
@@ -109,6 +116,22 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
   const revealGateRef = useRef<(() => void) | null>(null)
 
   useLayoutEffect(() => {
+    // Loader appears only on the first visit within the current browser session.
+    // Microtask still resolves before paint, so a repeat visit never flashes the loader.
+    try {
+      if (loaderDecision === null) {
+        loaderDecision = window.sessionStorage.getItem(LOADER_SESSION_KEY)
+          ? "skip"
+          : "show"
+        window.sessionStorage.setItem(LOADER_SESSION_KEY, "1")
+      }
+      if (loaderDecision === "skip") {
+        queueMicrotask(() => setPhase("ready"))
+      }
+    } catch {
+      /* sessionStorage unavailable — show loader normally */
+    }
+
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
     const syncReducedMotion = () => {
       if (!mq.matches) return
@@ -121,14 +144,19 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (reducedMotion) return
+    if (reducedMotion || phase !== "loading") return
 
+    const startedAt = performance.now()
     let finished = false
+    let minTimer = 0
+
     const finish = () => {
       if (finished) return
       finished = true
       window.clearTimeout(maxTimer)
-      setPhase("reveal")
+      // Keep the loader visible for a short minimum so it never flashes
+      const remaining = Math.max(0, LOADER_MIN_SHOW_MS - (performance.now() - startedAt))
+      minTimer = window.setTimeout(() => setPhase("reveal"), remaining)
     }
 
     const maxTimer = window.setTimeout(finish, LOADER_MAX_WAIT_MS)
@@ -137,9 +165,21 @@ export function SiteRevealProvider({ children }: { children: ReactNode }) {
     return () => {
       finished = true
       window.clearTimeout(maxTimer)
+      window.clearTimeout(minTimer)
       revealGateRef.current = null
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per initial load
   }, [reducedMotion])
+
+  // Block scroll while the loader overlay is visible; always restore afterwards
+  useEffect(() => {
+    if (phase === "ready") return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [phase])
 
   const notifyHeroReady = useCallback(() => {
     revealGateRef.current?.()

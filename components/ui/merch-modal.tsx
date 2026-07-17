@@ -5,15 +5,12 @@ import type { MerchItem } from "@/data/merch"
 import type { TranslationTree } from "@/data/translations"
 import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
 import Image from "next/image"
-import { useEffect, useId, useRef, useState } from "react"
-
-const FALLBACK = "/images/merch/merch-01.jpg"
+import { useEffect, useId, useRef } from "react"
 
 function MerchModalImage({ item, name }: { item: MerchItem; name: string }) {
-  const [useFallback, setUseFallback] = useState(false)
   return (
     <Image
-      src={useFallback ? FALLBACK : item.image}
+      src={item.image}
       alt={name}
       fill
       placeholder="blur"
@@ -22,7 +19,6 @@ function MerchModalImage({ item, name }: { item: MerchItem; name: string }) {
       style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
       sizes="(max-width: 640px) 96vw, (max-width: 1024px) 70vw, 36rem"
       priority
-      onError={() => setUseFallback(true)}
     />
   )
 }

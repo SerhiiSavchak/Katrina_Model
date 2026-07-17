@@ -11,15 +11,12 @@ import Image from "next/image"
 import { useState } from "react"
 import { useLocale } from "@/components/providers/app-providers"
 
-const STORY_COVER_FALLBACK = "/images/stories/story-01.jpg"
-
 function StoryCoverImage({ story, title, sizes }: { story: Story; title: string; sizes: string }) {
   const primary = story.images[0] ?? ""
-  const [src, setSrc] = useState(primary)
   const pos = story.objectPositions[0] ?? "50% 28%"
   return (
     <Image
-      src={src}
+      src={primary}
       alt={title}
       fill
       placeholder="blur"
@@ -27,7 +24,6 @@ function StoryCoverImage({ story, title, sizes }: { story: Story; title: string;
       className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
       style={{ objectPosition: pos }}
       sizes={sizes}
-      onError={() => setSrc(STORY_COVER_FALLBACK)}
     />
   )
 }

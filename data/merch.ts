@@ -1,5 +1,4 @@
 import { contactChannels } from "@/data/contacts"
-import { unsplashEditorial } from "@/data/remote-images"
 
 const telegramDefault =
   contactChannels.find((c) => c.id === "telegram")?.href ?? "https://t.me/dylanfoxi"
@@ -11,6 +10,8 @@ export interface MerchItem {
   image: string
   objectPosition?: string
   telegramHref: string
+  /** Temporary product mockup — replace with real merch photography when available. */
+  isPlaceholder?: boolean
 }
 
 export const merchItems: MerchItem[] = [
@@ -18,32 +19,36 @@ export const merchItems: MerchItem[] = [
     id: "1",
     name: "Signature Print",
     description: "Limited edition fine art print, signed and numbered.",
-    image: "/images/merch/merch-01.jpg",
-    objectPosition: "50% 22%",
+    image: "/images/merch/merch-print.jpg",
+    objectPosition: "50% 50%",
     telegramHref: telegramDefault,
+    isPlaceholder: true,
   },
   {
     id: "2",
     name: "Photo Card Set",
     description: "Collectible set of 12 premium photo cards.",
-    image: "/images/merch/merch-02.jpg",
-    objectPosition: "50% 28%",
+    image: "/images/merch/merch-cards.jpg",
+    objectPosition: "50% 50%",
     telegramHref: telegramDefault,
+    isPlaceholder: true,
   },
   {
     id: "3",
     name: "Limited T-shirt",
     description: "Premium cotton tee with exclusive artwork.",
-    image: unsplashEditorial("photo-1550614000-4895a10e339e", 1600),
-    objectPosition: "50% 24%",
+    image: "/images/merch/merch-tshirt.jpg",
+    objectPosition: "50% 45%",
     telegramHref: telegramDefault,
+    isPlaceholder: true,
   },
   {
     id: "4",
     name: "Poster Drop",
     description: "Large format poster from the latest editorial series.",
-    image: unsplashEditorial("photo-1558171813-48579e6a5f5a", 1600),
-    objectPosition: "50% 20%",
+    image: "/images/merch/merch-poster.jpg",
+    objectPosition: "50% 50%",
     telegramHref: telegramDefault,
+    isPlaceholder: true,
   },
 ]

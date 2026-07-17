@@ -14,13 +14,10 @@ import { useLocale } from "@/components/providers/app-providers"
 const telegramHref =
   contactChannels.find((c) => c.id === "telegram")?.href ?? "https://t.me/dylanfoxi"
 
-const FALLBACK_MERCH_IMG = "/images/merch/merch-01.jpg"
-
 function MerchCoverImage({ item, name, sizes }: { item: MerchItem; name: string; sizes: string }) {
-  const [src, setSrc] = useState(item.image)
   return (
     <Image
-      src={src}
+      src={item.image}
       alt={name}
       fill
       placeholder="blur"
@@ -28,7 +25,6 @@ function MerchCoverImage({ item, name, sizes }: { item: MerchItem; name: string;
       className="object-cover motion-safe:transition-transform motion-safe:duration-[1.15s] motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] [@media(hover:hover)]:motion-safe:group-hover:scale-[1.04]"
       style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
       sizes={sizes}
-      onError={() => setSrc(FALLBACK_MERCH_IMG)}
     />
   )
 }

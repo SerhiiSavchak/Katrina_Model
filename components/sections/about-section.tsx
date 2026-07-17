@@ -44,14 +44,13 @@ export function AboutSection() {
                 >
                   <Image
                     src={aboutSectionImage}
-                    alt="Katrina Dragonfly — editorial portrait"
+                    alt="Portrait of the model in a red editorial dress"
                     fill
                     placeholder="blur"
                     blurDataURL={IMAGE_BLUR_DATA_URL}
                     className="object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
-                    style={{ objectPosition: "52% 22%" }}
+                    style={{ objectPosition: "56% 18%" }}
                     sizes="(max-width: 1024px) 100vw, 42vw"
-                    priority={false}
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20" />
                   <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10" />

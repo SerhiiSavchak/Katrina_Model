@@ -10,6 +10,16 @@ import { portfolioItems, categories, type PortfolioCategory } from "@/data/portf
 import { cn } from "@/lib/cn"
 import { useLocale } from "@/components/providers/app-providers"
 
+function desktopGridClass(item: (typeof portfolioItems)[number]) {
+  if (item.featured && item.aspectRatio === "landscape") {
+    return "md:col-span-2 lg:col-span-3"
+  }
+  if (item.aspectRatio === "landscape") {
+    return "md:col-span-2 lg:col-span-2"
+  }
+  return "md:col-span-1"
+}
+
 export function PortfolioSection() {
   const { t } = useLocale()
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory>("All")
@@ -114,14 +124,14 @@ export function PortfolioSection() {
           </MobileSlider>
         </div>
 
-        <div className="hidden md:grid md:grid-cols-2 md:gap-x-5 md:gap-y-6 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-7">
-          {filteredItems.map((item, index) => {
+        <div className="hidden md:grid md:grid-cols-2 md:gap-x-5 md:gap-y-8 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
+            {filteredItems.map((item, index) => {
             const itemT = t.portfolio.items[item.id as keyof typeof t.portfolio.items]
             const displayTitle = itemT?.title ?? item.title
             const displayCategory = t.portfolio.categories[item.category]
 
             return (
-              <div key={item.id} className="min-w-0 h-full">
+              <div key={item.id} className={cn("min-w-0 h-full", desktopGridClass(item))}>
                 <Reveal delay={index * 45} variant="image">
                   <PortfolioCard
                     item={item}
@@ -129,6 +139,7 @@ export function PortfolioSection() {
                     displayTitle={displayTitle}
                     displayCategory={displayCategory}
                     onOpen={() => setOpenId(item.id)}
+                    featuredLayout
                   />
                 </Reveal>
               </div>

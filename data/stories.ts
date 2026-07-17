@@ -1,5 +1,3 @@
-import { unsplashEditorial } from "@/data/remote-images"
-
 export interface Story {
   id: string
   title: string
@@ -13,52 +11,54 @@ export interface Story {
   location?: string
 }
 
+/**
+ * Visual stories grouped by shoot — local model frames only (no stock).
+ * Covers reuse portfolio assets as narrative collections.
+ */
 export const stories: Story[] = [
   {
     id: "1",
-    title: "Soft Studio Session",
+    title: "Rain editorial",
     description:
-      "A refined study of light and form in a controlled studio environment.",
-    category: "Studio",
+      "A moody studio sequence with rain, electric guitar, and cool blue light.",
+    category: "Editorial",
     images: [
-      "/images/stories/story-01.jpg",
-      unsplashEditorial("photo-1534528741775-53994a69daeb", 2000),
-      unsplashEditorial("photo-1490481651871-ab68de25d43d", 2000),
-      unsplashEditorial("photo-1469334031218-e382a71b716b", 2000),
+      "/images/model/portfolio/rain-guitar-full-body.jpg",
+      "/images/model/portfolio/rain-guitar-portrait.jpg",
+      "/images/model/portfolio/wet-beauty-portrait.jpg",
+      "/images/model/art-nude/rain-art-nude.jpg",
     ],
-    objectPositions: ["48% 26%", "50% 22%", "50% 20%", "50% 28%"],
-    year: "2024",
-    location: "Kyiv studio",
+    objectPositions: ["50% 18%", "50% 22%", "50% 18%", "50% 22%"],
+    year: "2025",
+    location: "Studio",
   },
   {
     id: "2",
-    title: "Berlin Editorial Mood",
-    description: "Urban elegance captured in the streets and spaces of Berlin.",
+    title: "Red sofa series",
+    description:
+      "Cinematic red against quilted black leather — wide editorial frames from the same set.",
     category: "Editorial",
     images: [
-      "/images/stories/story-02.jpg",
-      unsplashEditorial("photo-1516576335081-94887d1346cc", 2000),
-      unsplashEditorial("photo-1539109136881-3ba061e47872", 2000),
-      unsplashEditorial("photo-1509631179647-b0176f404ebb", 2000),
+      "/images/model/portfolio/red-dress-sofa-featured.jpg",
+      "/images/model/portfolio/red-dress-reclining.jpg",
+      "/images/model/portfolio/white-bolero-chair.jpg",
     ],
-    objectPositions: ["50% 28%", "50% 30%", "52% 26%", "50% 24%"],
-    year: "2024",
-    location: "Berlin",
+    objectPositions: ["50% 42%", "50% 45%", "48% 20%"],
+    year: "2025",
+    location: "Studio",
   },
   {
     id: "3",
-    title: "Art Nude Series",
+    title: "Paint & form",
     description:
-      "Timeless artistic expression through classical form and modern vision.",
+      "Experimental body paint and lingerie editorial — colour, texture, and posture.",
     category: "Art Nude",
     images: [
-      "/images/stories/story-03.jpg",
-      unsplashEditorial("photo-1503342217505-b0a15ec326c7", 2000),
-      unsplashEditorial("photo-1517841905240-472988babdf9", 2000),
-      unsplashEditorial("photo-1483985988355-763728e1935b", 2000),
+      "/images/model/portfolio/body-paint-editorial.jpg",
+      "/images/model/portfolio/white-lingerie-chair.jpg",
     ],
-    objectPositions: ["48% 28%", "48% 30%", "50% 26%", "45% 28%"],
-    year: "2023",
+    objectPositions: ["50% 16%", "50% 16%"],
+    year: "2025",
     location: "Studio",
   },
 ]

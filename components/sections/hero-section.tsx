@@ -1,84 +1,66 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { siteContainerClass } from "@/components/layout/site-container"
 import { cn } from "@/lib/cn"
 import { useLocale, useSiteReveal } from "@/components/providers/app-providers"
-
-const VIDEO_MP4 = "/videos/hero-katrina.mp4"
-/** Локальный loop: editorial fashion (Mixkit «Fashion model… white background», free license) — замените на свой ролик при необходимости */
-const VIDEO_LOOP_LOCAL = "/videos/hero-loop.mp4"
-/** Запасной тот же стиль — Mixkit, если локальный файл удалён */
-const REMOTE_FALLBACK_MP4 =
-  "https://assets.mixkit.co/videos/43276/43276-720.mp4"
+import { heroPosterImage, heroPosterJpg, heroVideoSrc } from "@/data/remote-images"
 
 const SCROLL_HINT_HIDE_PX = 96
-/** Если autoplay не дал `playing`, всё равно убираем blur с кадра видео */
-const VIDEO_SHARP_FALLBACK_MS = 2800
 
 export function HeroSection() {
   const { t, locale } = useLocale()
   const { heroReveal, contentReveal, reducedMotion, notifyHeroReady } = useSiteReveal()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [scrollHintVisible, setScrollHintVisible] = useState(true)
-  /** Пока false — размытие на самом видео (первый кадр ролика), не отдельная фотка */
-  const [videoSharp, setVideoSharp] = useState(false)
-  const showVideoSharp = reducedMotion || videoSharp
+  const [videoReady, setVideoReady] = useState(false)
+  const [videoFailed, setVideoFailed] = useState(false)
 
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-    v.setAttribute("fetchpriority", "high")
-    void v.play().catch(() => {})
-  }, [])
+  // The muted ambient video stays mounted under prefers-reduced-motion too:
+  // unmounting it entirely made the hero look "broken" on machines with the
+  // OS-level "reduce animation" setting. UI motion is still reduced elsewhere.
+  const showVideo = !videoFailed
 
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
+  const markVideoReady = useCallback(() => {
+    setVideoReady(true)
+    notifyHeroReady()
+  }, [notifyHeroReady])
 
-    const makeSharp = () => setVideoSharp(true)
-    v.addEventListener("playing", makeSharp)
-    v.addEventListener("error", makeSharp)
-
-    const fallback = window.setTimeout(makeSharp, VIDEO_SHARP_FALLBACK_MS)
-
-    return () => {
-      v.removeEventListener("playing", makeSharp)
-      v.removeEventListener("error", makeSharp)
-      window.clearTimeout(fallback)
+  const handleVideoError = useCallback(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[hero] video failed to load — falling back to poster")
     }
-  }, [])
+    setVideoFailed(true)
+    setVideoReady(false)
+    notifyHeroReady()
+  }, [notifyHeroReady])
 
   useEffect(() => {
-    if (reducedMotion) return
-
-    let done = false
-    const signal = () => {
-      if (done) return
-      done = true
+    if (reducedMotion) {
       notifyHeroReady()
     }
-
-    const v = videoRef.current
-    const onMediaReady = () => signal()
-
-    if (v) {
-      if (v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) onMediaReady()
-      v.addEventListener("loadeddata", onMediaReady)
-      v.addEventListener("canplay", onMediaReady)
-      v.addEventListener("error", onMediaReady)
-    }
-
-    return () => {
-      done = true
-      if (v) {
-        v.removeEventListener("loadeddata", onMediaReady)
-        v.removeEventListener("canplay", onMediaReady)
-        v.removeEventListener("error", onMediaReady)
-      }
-    }
   }, [reducedMotion, notifyHeroReady])
+
+  useEffect(() => {
+    if (!showVideo) return
+    const v = videoRef.current
+    if (!v) return
+    // React does not always reflect `muted` into the SSR attribute; set the
+    // live property before play() so autoplay policies treat it as muted.
+    v.muted = true
+    v.defaultMuted = true
+    v.setAttribute("fetchpriority", "high")
+    // Guard against the canplay event firing before React handlers were live
+    if (v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) markVideoReady()
+    void v.play().catch((err) => {
+      // Autoplay rejection is non-fatal: poster (or the decoded first frame) stays visible
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[hero] autoplay was blocked:", err)
+      }
+    })
+  }, [showVideo, markVideoReady])
 
   useEffect(() => {
     const onScroll = () => {
@@ -114,9 +96,7 @@ export function HeroSection() {
       ? "text-[clamp(1.65rem,6.5vw,3.35rem)] sm:text-[clamp(2.1rem,7.5vw,4.1rem)] md:text-[clamp(2.45rem,5.2vw,5.25rem)] lg:text-[clamp(2.65rem,4.6vw,5.75rem)]"
       : "text-[clamp(1.95rem,7.5vw,4.75rem)] sm:text-[clamp(2.2rem,6.5vw,5.5rem)] md:text-[clamp(2.75rem,6.5vw,7rem)] lg:text-[clamp(3.1rem,6.5vw,8rem)]"
 
-  /** UA: каждая строка titleLines — одна линия (без переноса «Присутність»); ширина почти на весь контейнер */
   const titleMaxClass = locale === "ua" ? "max-w-full" : "max-w-[min(100%,46rem)]"
-
   const lineLeading = locale === "ua" ? "leading-[0.94]" : "leading-[0.95]"
 
   return (
@@ -126,29 +106,55 @@ export function HeroSection() {
       aria-label="Hero"
     >
       <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-950">
-        <video
-          ref={videoRef}
+        <div
           className={cn(
-            "absolute left-0 top-0 z-0 h-full min-h-[100svh] w-full object-cover object-[32%_27%] sm:object-[34%_27%] md:object-[38%_28%] lg:w-[132%] lg:max-w-none lg:object-[76%_30%] xl:w-[142%] xl:object-[80%_30%]",
-            !showVideoSharp &&
-              "blur-2xl brightness-[0.88] contrast-[1.04] saturate-[0.95] motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showVideoSharp &&
-              "blur-0 brightness-100 contrast-100 saturate-100 motion-safe:transition-[filter,transform,opacity] motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]",
+            "absolute inset-0",
             mediaMotion && "animate-hero-media-in",
-            !mediaMotion && !reducedMotion && "opacity-0",
-            reducedMotion && heroReveal && "opacity-100"
+            !heroReveal && !reducedMotion && "opacity-0"
           )}
-          autoPlay
-          muted
-          playsInline
-          loop
-          preload="auto"
-          aria-label="Hero background video"
         >
-          <source src={VIDEO_MP4} type="video/mp4" />
-          <source src={VIDEO_LOOP_LOCAL} type="video/mp4" />
-          <source src={REMOTE_FALLBACK_MP4} type="video/mp4" />
-        </video>
+          {/* Poster layer: instant first paint, stays under the video (crossfade target) */}
+          <Image
+            src={heroPosterImage}
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className={cn(
+              "object-cover object-[50%_20%]",
+              "transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+              showVideo && videoReady ? "opacity-0" : "opacity-100"
+            )}
+            onLoad={notifyHeroReady}
+            aria-hidden
+          />
+
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              className={cn(
+                "absolute left-0 top-0 z-[1] h-full min-h-[100svh] w-full object-cover object-[50%_20%]",
+                "transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+                videoReady ? "opacity-100" : "opacity-0"
+              )}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              controls={false}
+              poster={heroPosterJpg}
+              onLoadedData={markVideoReady}
+              onCanPlay={markVideoReady}
+              onPlaying={markVideoReady}
+              onError={handleVideoError}
+              aria-label="Hero background video"
+            >
+              <source src={heroVideoSrc} type="video/mp4" />
+            </video>
+          ) : null}
+        </div>
       </div>
 
       <div

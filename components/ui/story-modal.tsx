@@ -1,14 +1,12 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useId, useRef, useState } from "react"
+import { useEffect, useId, useRef } from "react"
 import { EditorialModal } from "@/components/ui/editorial-modal"
 import type { Story } from "@/data/stories"
 import type { TranslationTree } from "@/data/translations"
 import { cn } from "@/lib/cn"
 import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur"
-
-const FALLBACK = "/images/stories/story-01.jpg"
 
 function StorySlideImage({
   src,
@@ -21,11 +19,9 @@ function StorySlideImage({
   title: string
   index: number
 }) {
-  const [useFallback, setUseFallback] = useState(false)
-
   return (
     <Image
-      src={useFallback ? FALLBACK : src}
+      src={src}
       alt={`${title} — ${index + 1}`}
       fill
       placeholder="blur"
@@ -33,7 +29,6 @@ function StorySlideImage({
       className="object-cover motion-safe:transition-transform motion-safe:duration-[1.25s] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
       style={{ objectPosition: pos }}
       sizes="(max-width: 640px) 44vw, (max-width: 1024px) 24vw, 220px"
-      onError={() => setUseFallback(true)}
     />
   )
 }
