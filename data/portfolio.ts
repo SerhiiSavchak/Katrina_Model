@@ -22,9 +22,11 @@ export interface PortfolioItem {
 }
 
 /**
- * Visual hierarchy (editorial sequence):
- * full-body → body paint → wide cinematic → mid portrait → fashion full-body →
- * second landscape → beauty → lingerie → art nude (last).
+ * Visual hierarchy (editorial sequence), desktop grid rows of three portraits
+ * separated by wide featured landscapes:
+ * rain full-body → body paint → fashion full-body | red sofa (wide) |
+ * rain beauty → paint session → lingerie | red reclining (wide) |
+ * wet beauty → honey still → art nude | paint studio (wide, closing frame).
  */
 export const portfolioItems: PortfolioItem[] = [
   {
@@ -45,6 +47,17 @@ export const portfolioItems: PortfolioItem[] = [
     image: "/images/model/portfolio/body-paint-editorial.jpg",
     alt: "Experimental body-paint editorial portrait",
     objectPosition: "50% 16%",
+    aspectRatio: "portrait",
+    year: "2025",
+    location: "Studio",
+  },
+  {
+    id: "5",
+    title: "White bolero",
+    category: "Fashion",
+    image: "/images/model/portfolio/white-bolero-chair.jpg",
+    alt: "Full-body fashion portrait of the model posing with a wooden chair",
+    objectPosition: "48% 20%",
     aspectRatio: "portrait",
     year: "2025",
     location: "Studio",
@@ -73,12 +86,23 @@ export const portfolioItems: PortfolioItem[] = [
     location: "Studio",
   },
   {
-    id: "5",
-    title: "White bolero",
+    id: "10",
+    title: "Paint session",
+    category: "Studio",
+    image: "/images/model/portfolio/paint-brush-portrait.jpg",
+    alt: "Creative studio portrait of the model with a paintbrush and paint bottles",
+    objectPosition: "50% 30%",
+    aspectRatio: "portrait",
+    year: "2025",
+    location: "Studio",
+  },
+  {
+    id: "8",
+    title: "White lingerie",
     category: "Fashion",
-    image: "/images/model/portfolio/white-bolero-chair.jpg",
-    alt: "Full-body fashion portrait of the model posing with a wooden chair",
-    objectPosition: "48% 20%",
+    image: "/images/model/portfolio/white-lingerie-chair.jpg",
+    alt: "Studio lingerie editorial portrait on a red chair",
+    objectPosition: "50% 16%",
     aspectRatio: "portrait",
     year: "2025",
     location: "Studio",
@@ -107,12 +131,12 @@ export const portfolioItems: PortfolioItem[] = [
     location: "Studio",
   },
   {
-    id: "8",
-    title: "White lingerie",
-    category: "Fashion",
-    image: "/images/model/portfolio/white-lingerie-chair.jpg",
-    alt: "Studio lingerie editorial portrait on a red chair",
-    objectPosition: "50% 16%",
+    id: "11",
+    title: "Honey silhouette",
+    category: "Art Nude",
+    image: "/images/model/art-nude/honey-silhouette.jpg",
+    alt: "High-key art nude still of dripping honey on a silhouetted torso",
+    objectPosition: "50% 45%",
     aspectRatio: "portrait",
     year: "2025",
     location: "Studio",
@@ -125,6 +149,18 @@ export const portfolioItems: PortfolioItem[] = [
     alt: "Art nude editorial portrait photographed in the rain",
     objectPosition: "50% 22%",
     aspectRatio: "portrait",
+    year: "2025",
+    location: "Studio",
+  },
+  {
+    id: "12",
+    title: "Paint studio",
+    category: "Studio",
+    image: "/images/model/portfolio/paint-studio-wide.jpg",
+    alt: "Wide creative studio frame of the model behind a table of paint bottles",
+    objectPosition: "50% 32%",
+    aspectRatio: "landscape",
+    featured: true,
     year: "2025",
     location: "Studio",
   },
