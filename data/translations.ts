@@ -73,51 +73,45 @@ export const translations = {
       } satisfies Record<PortfolioCategoryKey, string>,
       items: {
         "1": {
-          title: "Rain guitar",
+          title: "Red vase editorial",
           detail:
-            "Full-body rain editorial — pink electric guitar, wet silk, and cool studio light.",
+            "Fashion portrait in a red cutout dress — warm light and an ornate ceramic vase.",
           location: "Studio",
         },
         "2": {
-          title: "Body paint",
+          title: "Paint form",
           detail:
-            "Experimental body-paint study — brushwork, colour, and contemplative posture.",
+            "Body-paint editorial — expressive colour, posture, and a deep maroon backdrop.",
           location: "Studio",
         },
         "3": {
-          title: "Red sofa editorial",
+          title: "Red sofa lights",
           detail:
-            "Wide cinematic frame — red against quilted black leather and warm bulb light.",
+            "Wide cinematic frame — red against black leather and a grid of warm studio lights.",
           location: "Studio",
         },
         "4": {
-          title: "Rain beauty",
-          detail: "Close rain portrait with pink guitar — water texture and blue rim light.",
+          title: "Paint beauty",
+          detail:
+            "Beauty close-up with body paint, brush, and soft foreground colour bottles.",
           location: "Studio",
         },
         "5": {
-          title: "White bolero",
-          detail: "Fashion full-body with wooden chair — studio bulbs and sharp silhouette.",
+          title: "Paint still",
+          detail:
+            "Wide paint portrait — brush in hand, colour bottles, and a quiet cinematic stare.",
           location: "Studio",
         },
         "6": {
-          title: "Red reclining",
-          detail: "Second wide red-dress frame — reclining pose, soft smile, dark leather.",
+          title: "Honey silhouette",
+          detail:
+            "High-contrast art nude silhouette — honey drip against a clean white field.",
           location: "Studio",
         },
         "7": {
-          title: "Wet beauty",
-          detail: "Beauty close-up in rain — translucent fabric and cool blue backlight.",
-          location: "Studio",
-        },
-        "8": {
-          title: "White lingerie",
-          detail: "Lingerie editorial on a red chair — warm vanity lights and reflective floor.",
-          location: "Studio",
-        },
-        "9": {
-          title: "Rain art nude",
-          detail: "Art nude rain portrait — warm key light and cool blue rim against black.",
+          title: "Sushi still life",
+          detail:
+            "Overhead art nude still life — sushi, chopsticks, and champagne on white fabric.",
           location: "Studio",
         },
       },
@@ -134,29 +128,29 @@ export const translations = {
       collectionAria: "Story image gallery",
       items: {
         "1": {
-          title: "Rain editorial",
+          title: "Paint series",
           description:
-            "A moody studio sequence with rain, electric guitar, and cool blue light.",
+            "A body-paint editorial sequence — colour, brushwork, and contemplative posture.",
           category: "Editorial",
-          tags: ["Editorial", "Rain", "Beauty"],
+          tags: ["Editorial", "Beauty", "Art nude"],
           year: "2025",
           location: "Studio",
         },
         "2": {
-          title: "Red sofa series",
+          title: "Red editorial",
           description:
-            "Cinematic red against quilted black leather — wide editorial frames from the same set.",
+            "Cinematic red against warm studio light — fashion portrait and sofa frame from the same set.",
           category: "Editorial",
           tags: ["Editorial", "Fashion", "Studio"],
           year: "2025",
           location: "Studio",
         },
         "3": {
-          title: "Paint & form",
+          title: "Form & still life",
           description:
-            "Experimental body paint and lingerie editorial — colour, texture, and posture.",
+            "Conceptual art nude — honey silhouette and overhead sushi still life.",
           category: "Art nude",
-          tags: ["Art nude", "Editorial", "Beauty"],
+          tags: ["Art nude", "Editorial", "Studio"],
           year: "2025",
           location: "Studio",
         },
@@ -328,51 +322,45 @@ export const translations = {
       } satisfies Record<PortfolioCategoryKey, string>,
       items: {
         "1": {
-          title: "Гітара під дощем",
+          title: "Червона ваза",
           detail:
-            "Повнозростова редакція під дощем — рожева електрогітара, мокрий шовк і холодне студійне світло.",
+            "Фешн-портрет у червоній сукні з вирізом — тепле світло й орнаментальна керамічна ваза.",
           location: "Студія",
         },
         "2": {
-          title: "Боді-пейнт",
+          title: "Фарба і форма",
           detail:
-            "Експериментальний боді-пейнт — мазки, колір і спокійна пластика.",
+            "Редакційний боді-пейнт — виразний колір, пластика й глибокий бордовий фон.",
           location: "Студія",
         },
         "3": {
           title: "Червона софа",
           detail:
-            "Широкий кінематографічний кадр — червоне на стьобаній чорній шкірі й тепле світло ламп.",
+            "Широкий кінематографічний кадр — червоне на чорній шкірі й сітка теплих студійних ламп.",
           location: "Студія",
         },
         "4": {
-          title: "Бʼюті під дощем",
-          detail: "Близький портрет під дощем із рожевою гітарою — фактура води й синє контрове світло.",
+          title: "Бʼюті з фарбою",
+          detail:
+            "Бʼюті-крупний план з боді-пейнтом, пензлем і мʼяким переднім планом з фарбами.",
           location: "Студія",
         },
         "5": {
-          title: "Біле болеро",
-          detail: "Фешн у повний зріст із деревʼяним стільцем — студійні лампи й чіткий силует.",
+          title: "Портрет з фарбою",
+          detail:
+            "Широкий портрет з фарбою — пензель у руці, баночки кольорів і спокійний погляд.",
           location: "Студія",
         },
         "6": {
-          title: "Червоне на софі",
-          detail: "Другий широкий кадр у червоному — лежача поза, мʼяка посмішка, темна шкіра.",
+          title: "Медовий силует",
+          detail:
+            "Контрастний арт-ню силует — мед, що стікає, на чистому білому полі.",
           location: "Студія",
         },
         "7": {
-          title: "Мокрий бʼюті",
-          detail: "Бʼюті-крупний план під дощем — напівпрозора тканина й холодний синій задній план.",
-          location: "Студія",
-        },
-        "8": {
-          title: "Біла білизна",
-          detail: "Білизна на червоному стільці — теплі vanity-лампи й дзеркальна підлога.",
-          location: "Студія",
-        },
-        "9": {
-          title: "Арт-ню під дощем",
-          detail: "Арт-ню портрет під дощем — тепле ключове й холодне синє контрове світло.",
+          title: "Суші натюрморт",
+          detail:
+            "Арт-ню зверху — суші, палички й шампанське на білій тканині.",
           location: "Студія",
         },
       },
@@ -389,29 +377,29 @@ export const translations = {
       collectionAria: "Галерея кадрів історії",
       items: {
         "1": {
-          title: "Редакція під дощем",
+          title: "Серія з фарбою",
           description:
-            "Настроєва студійна серія з дощем, електрогітарою та холодним синім світлом.",
+            "Редакційна серія боді-пейнту — колір, мазки й спокійна пластика.",
           category: "Редакція",
-          tags: ["Редакція", "Дощ", "Бʼюті"],
+          tags: ["Редакція", "Бʼюті", "Арт-ню"],
           year: "2025",
           location: "Студія",
         },
         "2": {
-          title: "Серія червона софа",
+          title: "Червона редакція",
           description:
-            "Кінематографічний червоний на стьобаній чорній шкірі — широкі редакційні кадри однієї зйомки.",
+            "Кінематографічний червоний у теплому студійному світлі — фешн-портрет і кадр на софі.",
           category: "Редакція",
           tags: ["Редакція", "Фешн", "Студія"],
           year: "2025",
           location: "Студія",
         },
         "3": {
-          title: "Фарба і форма",
+          title: "Форма і натюрморт",
           description:
-            "Експериментальний боді-пейнт і білизна — колір, фактура й пластика.",
+            "Концептуальний арт-ню — медовий силует і суші-натюрморт зверху.",
           category: "Арт-ню",
-          tags: ["Арт-ню", "Редакція", "Бʼюті"],
+          tags: ["Арт-ню", "Редакція", "Студія"],
           year: "2025",
           location: "Студія",
         },

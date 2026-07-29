@@ -1,16 +1,18 @@
 /**
  * Local model media paths — hero poster, about / intro portraits, OG image.
+ * All model stills come from the approved final-photos set.
  */
 
-/** Intro — секція «У кадрі» одразу під hero (`IntroSection`). */
-export const introSectionImage =
-  "/images/model/about/natural-garden-portrait.jpg"
+const FINAL = "/images/final-photos" as const
 
-/** About — red editorial dress portrait (used ONLY in About). */
-export const aboutSectionImage = "/images/model/about/about-red-dress.jpg"
+/** Intro — секція «У кадрі» одразу під hero (`IntroSection`). */
+export const introSectionImage = `${FINAL}/IMG_3461.JPG`
+
+/** About — personal beauty / paint portrait (used ONLY in About). */
+export const aboutSectionImage = `${FINAL}/IMG_3470.JPG`
 
 /** Open Graph / social share image (safe editorial, not art-nude). */
-export const ogImage = "/images/model/portfolio/rain-guitar-portrait.jpg"
+export const ogImage = `${FINAL}/IMG_3473.JPG`
 
 /** Hero poster (WebP) — instant first paint layer under the video. */
 export const heroPosterImage = "/images/hero/hero-poster.webp"

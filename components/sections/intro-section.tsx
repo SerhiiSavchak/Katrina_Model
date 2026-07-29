@@ -46,12 +46,12 @@ export function IntroSection() {
               >
                 <Image
                   src={introSectionImage}
-                  alt="Natural outdoor portrait of the model in a green garden"
+                  alt="Fashion portrait of the model in a red dress beside an ornate ceramic vase"
                   fill
                   placeholder="blur"
                   blurDataURL={IMAGE_BLUR_DATA_URL}
                   className="object-cover transition-transform duration-[1.25s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                  style={{ objectPosition: "50% 28%" }}
+                  style={{ objectPosition: "55% 18%" }}
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   priority
                 />

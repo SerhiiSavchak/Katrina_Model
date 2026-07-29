@@ -122,7 +122,7 @@ export function HeroSection() {
             fetchPriority="high"
             sizes="100vw"
             className={cn(
-              "object-cover object-[50%_20%]",
+              "object-cover object-[50%_32%]",
               "transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
               showVideo && videoReady ? "opacity-0" : "opacity-100"
             )}
