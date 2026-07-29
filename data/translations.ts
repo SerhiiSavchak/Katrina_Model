@@ -120,21 +120,6 @@ export const translations = {
           detail: "Art nude rain portrait — warm key light and cool blue rim against black.",
           location: "Studio",
         },
-        "10": {
-          title: "Paint session",
-          detail: "Creative studio frame — paintbrush, colour on skin, and bottles of paint in the foreground.",
-          location: "Studio",
-        },
-        "11": {
-          title: "Honey silhouette",
-          detail: "High-key art nude still — dripping honey and a sculpted silhouette against white.",
-          location: "Studio",
-        },
-        "12": {
-          title: "Paint studio",
-          detail: "Wide creative studio scene — a table of paints, colour on skin, and a direct gaze.",
-          location: "Studio",
-        },
       },
     },
     stories: {
@@ -172,15 +157,6 @@ export const translations = {
             "Experimental body paint and lingerie editorial — colour, texture, and posture.",
           category: "Art nude",
           tags: ["Art nude", "Editorial", "Beauty"],
-          year: "2025",
-          location: "Studio",
-        },
-        "4": {
-          title: "Body still life",
-          description:
-            "Sushi, honey, and light — the body as a quiet still-life canvas in high-key frames.",
-          category: "Editorial",
-          tags: ["Editorial", "Creative", "Studio"],
           year: "2025",
           location: "Studio",
         },
@@ -399,21 +375,6 @@ export const translations = {
           detail: "Арт-ню портрет під дощем — тепле ключове й холодне синє контрове світло.",
           location: "Студія",
         },
-        "10": {
-          title: "Сесія з фарбою",
-          detail: "Креативний студійний кадр — пензель, колір на шкірі та пляшки з фарбою на передньому плані.",
-          location: "Студія",
-        },
-        "11": {
-          title: "Медовий силует",
-          detail: "Хай-кі арт-ню натюрморт — мед, що стікає, і скульптурний силует на білому.",
-          location: "Студія",
-        },
-        "12": {
-          title: "Студія фарби",
-          detail: "Широкий креативний студійний кадр — стіл із фарбами, колір на шкірі й прямий погляд.",
-          location: "Студія",
-        },
       },
     },
     stories: {
@@ -451,15 +412,6 @@ export const translations = {
             "Експериментальний боді-пейнт і білизна — колір, фактура й пластика.",
           category: "Арт-ню",
           tags: ["Арт-ню", "Редакція", "Бʼюті"],
-          year: "2025",
-          location: "Студія",
-        },
-        "4": {
-          title: "Тіло як натюрморт",
-          description:
-            "Суші, мед і світло — тіло як тихе полотно натюрморту в хай-кі кадрах.",
-          category: "Редакція",
-          tags: ["Редакція", "Креатив", "Студія"],
           year: "2025",
           location: "Студія",
         },

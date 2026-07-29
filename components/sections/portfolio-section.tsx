@@ -124,7 +124,7 @@ export function PortfolioSection() {
           </MobileSlider>
         </div>
 
-        <div className="hidden md:grid md:grid-flow-row-dense md:grid-cols-2 md:gap-x-5 md:gap-y-8 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
+        <div className="hidden md:grid md:grid-cols-2 md:gap-x-5 md:gap-y-8 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
             {filteredItems.map((item, index) => {
             const itemT = t.portfolio.items[item.id as keyof typeof t.portfolio.items]
             const displayTitle = itemT?.title ?? item.title
